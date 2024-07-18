@@ -1,0 +1,39 @@
+#header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    width: 100vw;
+    height: 100%;
+    background-color: var(--col-gray-scale-2);
+    color: var(--foreground);
+}
+
+#header > .logoWarp {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+#header > .logoWarp > .logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#header > .timeWrap {
+}
+
+#header > .timeWrap > .time {
+    color: var(--col-gray-scale-6);
+    font-size: 1.625rem;
+}
+
+#header > .titleWrap {
+    flex: 1;
+}
+
+#header > .titleWrap > .title {
+    color: var(--col-gray-scale-9);
+    font-size: 1.625rem;
+}

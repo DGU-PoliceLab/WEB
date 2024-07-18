@@ -3,16 +3,26 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // 서비스
 // 레이아웃
+import RootLayout from "./layouts/root/layout";
 // 페이지
-import HomePage from "./pages/home/page";
+import MultiViewPage from "./pages/multiview/page";
+import DetailViewPage from "./pages/detailview/page";
 // 스타일
 import "./index.css";
-import "./custom.css";
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <HomePage />,
+        element: <RootLayout />,
+        children: [
+            {
+                path: "/",
+                element: <MultiViewPage />,
+            },
+            {
+                path: "/detail",
+                element: <DetailViewPage />,
+            },
+        ],
     },
 ]);
 

@@ -1,0 +1,44 @@
+#detailViewPage {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    height: 100%;
+    max-height: 100%;
+}
+
+#detailViewPage > .viewContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    max-height: 560px;
+}
+
+#detailViewPage > .viewContainer > .realtimeViewContainer {
+    height: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+#detailViewPage > .viewContainer > .overViewContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+#detailViewPage > .viewContainer > .overViewContainer > .headerWrap {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+#detailViewPage > .viewContainer > .overViewContainer > .headerWrap > .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+#detailViewPage > .eventContainer {
+    flex: 1;
+    overflow: scroll;
+}
