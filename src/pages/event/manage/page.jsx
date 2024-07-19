@@ -9,12 +9,10 @@ import EventList from "@/components/event/list/component";
 // 아이콘
 // 스타일
 import "./style.css";
-import DatePickerRHF from "@/components/ui/DatePicker/DatePickerRHF";
 
 const EventManagePage = () => {
     return (
         <div id="eventManagePage" className="page">
-            <DatePickerRHF type="dateWithTime" />
             <div className="filterContainer">
                 <EventFilter />
             </div>

@@ -38,7 +38,8 @@ const EventFilter = () => {
         "자해",
         "폭행",
     ]);
-    const [datetime, setDatetime] = useState(new Date());
+    const [startDatetime, setStartDatetime] = useState(new Date());
+    const [endDatetime, setEndDatetime] = useState(new Date());
     const [location, setLocation] = useState([]);
     const [type, setType] = useState([]);
     const initFocus = () => {
@@ -124,10 +125,53 @@ const EventFilter = () => {
                         날짜 및 시간
                     </label>
                     <div className="dropDownWrap datetime">
-                        <ReactDatePicker
-                            selected={datetime}
-                            onChange={(date) => setDatetime(date)}
-                        />
+                        <div className="detailWrap">
+                            <div className="startWrap">
+                                <p>시작일/시</p>
+                                <ReactDatePicker
+                                    className="datePicker"
+                                    locale={ko}
+                                    selected={startDatetime}
+                                    dateFormat="yyyy/MM/dd - aa h:mm"
+                                    showTimeSelect
+                                    placeholderText="날짜 및 시간"
+                                    autoComplete="off"
+                                    onChange={(date) => {
+                                        setStartDatetime(date);
+                                    }}
+                                />
+                            </div>
+                            <span>-</span>
+                            <div className="endWrap">
+                                <p>종료일/시</p>
+                                <ReactDatePicker
+                                    className="datePicker"
+                                    locale={ko}
+                                    selected={endDatetime}
+                                    dateFormat="yyyy/MM/dd - aa h:mm"
+                                    showTimeSelect
+                                    placeholderText="날짜 및 시간"
+                                    autoComplete="off"
+                                    onChange={(date) => {
+                                        setEndDatetime(date);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="shortCutWrap">
+                            <button className="btn-1 btn-sm btn-round-square">
+                                오늘
+                            </button>
+                            <button className="btn-1 btn-sm btn-round-square">
+                                어제
+                            </button>
+                            <button className="btn-1 btn-sm btn-round-square">
+                                일주일
+                            </button>
+                            <button className="btn-1 btn-sm btn-round-square">
+                                한달
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className="locationWrap optWrap">
