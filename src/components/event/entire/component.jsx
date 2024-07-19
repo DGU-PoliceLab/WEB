@@ -3,7 +3,6 @@ import { useState } from "react";
 // 서비스
 // 컴포넌트
 // 아이콘
-import { Menu } from "lucide-react";
 // 스타일
 import "./style.css";
 
@@ -100,57 +99,49 @@ const testData = [
     },
 ];
 
-const PartialEventList = () => {
+const EntireEventList = () => {
     return (
-        <div id="partialEventList">
+        <div id="entireEventList">
             <div className="headerWrap">
-                <p className="title">유치실 이벤트 내역</p>
+                <p className="title">전체 이벤트 내역</p>
                 <div className="funcWrap">
+                    <button className="btn-2 btn-sm btn-round">
+                        전체 확인
+                    </button>
                     <button className="btn-2 btn-sm btn-round">
                         전체 보기
                     </button>
                 </div>
             </div>
-            <div className="tableWrap">
-                <EventTable data={testData} />
+            <div className="eventWrap">
+                {testData.map((data, idx) => (
+                    <EventItem data={data} key={idx} />
+                ))}
             </div>
         </div>
-    );
-};
-
-const EventTable = ({ data }) => {
-    const [event, setEvent] = useState(data);
-    return (
-        <table className="eventTable">
-            <tr>
-                <th className="time">이벤트 발생 일시</th>
-                <th className="type">이벤트명</th>
-                <th className="dummy"></th>
-                <th className="check">이벤트 확인 일시</th>
-                <th className="detail"></th>
-            </tr>
-            {event.map((data, idx) => (
-                <EventItem data={data} key={idx} />
-            ))}
-        </table>
     );
 };
 
 const EventItem = ({ data }) => {
     const [event, setEvent] = useState(data);
     return (
-        <tr className="eventItem">
-            <td className="time">{event.event_time}</td>
-            <td className="type">{event.event_type}</td>
-            <td className="dummy"></td>
-            <td className="check">{event.event_time}</td>
-            <td className="detail">
-                <button className="btn-1 btn-m btn-round">
-                    이벤트 상세 보기
-                </button>
-            </td>
-        </tr>
+        <div className="eventItem">
+            <div className="typeWrap dataWrap">
+                <span className="title">이벤트 명</span>
+                <span className="content">{event.event_type}</span>
+            </div>
+            <div className="descWrap">
+                <div className="locatonWrap dataWrap">
+                    <span className="title">발생 장소</span>
+                    <span className="content">{event.event_location}</span>
+                </div>
+                <div className="timeWrap dataWrap">
+                    <span className="title">발생 시각</span>
+                    <span className="content">{event.event_time}</span>
+                </div>
+            </div>
+        </div>
     );
 };
 
-export default PartialEventList;
+export default EntireEventList;

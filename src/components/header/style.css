@@ -3,37 +3,67 @@
     flex-direction: row;
     align-items: center;
     gap: 1rem;
-    padding: 0.75rem;
+    padding: 0.75rem 1.25rem;
     width: 100vw;
     height: 100%;
-    background-color: var(--col-gray-scale-2);
+    background-color: var(--backgorund);
+    border-bottom: 1px solid var(--border);
     color: var(--foreground);
 }
 
-#header > .logoWarp {
+#header > .logoWrap,
+#header > .menuWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
 }
 
-#header > .logoWarp > .logo {
-    width: 100%;
-    height: 100%;
+#header > .logoWrap > .logo,
+#header > .menuWrap > .menu {
+    width: 2.25rem;
+    height: 2.25rem;
     object-fit: cover;
+    opacity: 1;
+    transition: 0.2s;
+}
+
+#header > .logoWrap > .logo:hover,
+#header > .menuWrap > .menu:hover {
+    opacity: 0.8;
 }
 
 #header > .timeWrap {
+    width: fit-content;
+    min-width: 16rem;
 }
 
 #header > .timeWrap > .time {
-    color: var(--col-gray-scale-6);
     font-size: 1.625rem;
+    font-weight: 500;
+    color: var(--col-gray-scale-6);
 }
 
 #header > .titleWrap {
     flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
 }
 
 #header > .titleWrap > .title {
-    color: var(--col-gray-scale-9);
-    font-size: 1.625rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-2);
+}
+
+#header > .titleWrap > .title:last-child {
+    font-weight: 600;
+    color: var(--text-0);
 }

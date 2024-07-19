@@ -7,6 +7,7 @@ import StreamView from "../streamview/component";
 import { LucideArrowUpRightFromSquare } from "lucide-react";
 // 스타일
 import "./style.css";
+import { useNavigate } from "react-router-dom";
 
 const testData = [
     {
@@ -88,12 +89,18 @@ const MultiView = () => {
 };
 
 const View = ({ id = 0, name = "유치실", url = "rtsp://", event = false }) => {
+    const navigate = useNavigate();
     return (
         <div className={event ? "view active" : "view"} key="id">
             <div className="headerWrap">
                 <p className="title">[ {name} ]</p>
                 <p className="event">[ 폭행 17:42:32 ]</p>
-                <div className="detailWrap">
+                <div
+                    className="detailWrap"
+                    onClick={() => {
+                        navigate("/detail");
+                    }}
+                >
                     <LucideArrowUpRightFromSquare />
                 </div>
             </div>

@@ -5,11 +5,34 @@
 /* black */
 @layer base {
     :root {
-        --background: 222.2 84% 4.9%;
+        --background: #030303;
         --foreground: 210 40% 98%;
+        --dimmed: #00000080;
 
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
+        --scorll-bar: #00000000;
+        --scroll-bar-thumb: #ffffff33;
+        --scroll-bar-thumb-hover: #ffffff88;
+        --scroll-bar-track: #00000000;
+
+        --card: #212121;
+        --card-border: #383838;
+        --card-radius: 0.125rem;
+        --card-hover: #2c2c2c;
+
+        --table: #060606;
+        --table-border: #383838;
+        --table-radius: 0.125rem;
+        --table-header: #383838;
+        --table-highlight: #111111;
+
+        --msg: #292929;
+        --msg-border: #484848;
+        --msg-radius: 0.25rem;
+        --msg-text: #cccccc;
+
+        --view-radius: 0.25rem;
+        --stream-view: #383838;
+        --stream-view-radius: 0.125rem;
 
         --popover: 222.2 84% 4.9%;
         --popover-foreground: 210 40% 98%;
@@ -29,11 +52,22 @@
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 210 40% 98%;
 
-        --danger: #f52020;
+        --danger-foreground: #ffb9b9ee;
+        --danger: #d84545;
+        --danger-text: #5f2020;
 
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 212.7 26.8% 83.9%;
+        --border: #292929;
+
+        --input: #292929;
+        --input-border: #484848;
+        --input-active: #030303;
+        --input-active-border: #292929;
+        --input-radius: 0.25rem;
+
+        --text-0: #ffffff;
+        --text-1: #b4b4b4;
+        --text-2: #b0b0b0;
+
         --col-gray-scale-0: #000000;
         --col-gray-scale-1: #111111;
         --col-gray-scale-2: #333333;
@@ -45,10 +79,15 @@
         --col-gray-scale-8: #eeeeee;
         --col-gray-scale-9: #ffffff;
 
-        --btn: #555555;
-        --btn-hover: #666666;
-        --btn-border: #666666;
-        --btn-hover-border: #999999;
+        --btn-1: #1d1d1d;
+        --btn-1-hover: #353535;
+        --btn-1-border: #1d1d1d;
+        --btn-1-hover-border: #353535;
+
+        --btn-2: #020202;
+        --btn-2-hover: #353535;
+        --btn-2-border: #343434;
+        --btn-2-hover-border: #353535;
 
         --radius-none: 0;
         --radius-small: 0.25rem;
@@ -77,6 +116,11 @@
 
 * {
     font-family: "Wanted Sans Variable" !important;
+}
+
+p,
+span {
+    user-select: none;
 }
 
 html {
@@ -111,4 +155,112 @@ html {
 .icon_64 {
     width: 4rem;
     height: 4rem;
+}
+
+.msg {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--msg);
+    border: 1px solid var(--msg-border);
+    border-radius: var(--msg-radius);
+    color: var(--msg-text);
+}
+
+.msg > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+.msgDanger {
+    background-color: var(--danger-foreground);
+    border: 1px solid var(--danger);
+    font-weight: 600;
+    color: var(--danger-text);
+}
+
+.msgDanger > svg {
+    color: var(--danger);
+    stroke-width: 2.5;
+}
+
+button {
+    outline: none;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+input {
+    padding: 0.5rem 0.75rem;
+    background-color: var(--input);
+    border: 1px solid var(--input-border);
+    border-radius: var(--input-radius);
+    outline: none;
+    transition: 0.1s;
+}
+
+input:disabled {
+    color: var(--text-1);
+    user-select: none;
+}
+
+input:focus {
+    background-color: var(--input-active);
+    border: 1px solid var(--input-active-border);
+}
+
+.btn-1 {
+    background-color: var(--btn-1);
+    border: 1px solid var(--btn-1-border);
+}
+
+.btn-1:hover {
+    background-color: var(--btn-1-hover);
+    border: 1px solid var(--btn-1-hover-border);
+}
+
+.btn-2 {
+    background-color: var(--btn-2);
+    border: 1px solid var(--btn-2-border);
+}
+
+.btn-2:hover {
+    background-color: var(--btn-2-hover);
+    border: 1px solid var(--btn-2-hover-border);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+}
+
+.btn-m {
+    padding: 0.75rem 1.25rem;
+}
+.btn-lg {
+    padding: 1rem 1.75rem;
+}
+
+.btn-round {
+    border-radius: 10rem;
+}
+
+*::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 100%;
+    background-color: var(--scroll-bar);
+}
+
+*::-webkit-scrollbar-track {
+    background-color: var(--scroll-bar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 0.25rem;
+    background-color: var(--scroll-bar-thumb);
+    cursor: ns-resize;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scroll-bar-thumb-hover);
 }

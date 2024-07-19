@@ -2,7 +2,8 @@
 // 서비스
 // 컴포넌트
 import StreamView from "@/components/streamview/component";
-import PartialEventList from "@/components/event/ entire/component";
+import OverView from "@/components/overview/component";
+import PartialEventList from "@/components/event/partial/component";
 // 아이콘
 // 스타일
 import "./style.css";
@@ -15,9 +16,7 @@ const DetailViewPage = () => {
                     <StreamView />
                 </div>
                 <div className="overViewContainer">
-                    <div className="headerWrap">
-                        <p className="title">객체 오버뷰</p>
-                    </div>
+                    <OverView />
                 </div>
             </div>
             <div className="eventContainer">

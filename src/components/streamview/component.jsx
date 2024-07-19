@@ -6,8 +6,12 @@ import { useState } from "react";
 // 스타일
 import "./style.css";
 
-const StreamView = ({ name, url }) => {
-    return <div className="streamView">2</div>;
+const StreamView = ({ name = null, url = null }) => {
+    return (
+        <div className="streamView">
+            {url == null ? <p>No Signal</p> : <div></div>}
+        </div>
+    );
 };
 
 export default StreamView;
