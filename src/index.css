@@ -67,6 +67,7 @@
         --text-0: #ffffff;
         --text-1: #b4b4b4;
         --text-2: #b0b0b0;
+        --text-9: #000000;
 
         --col-gray-scale-0: #000000;
         --col-gray-scale-1: #111111;
@@ -88,6 +89,11 @@
         --btn-2-hover: #353535;
         --btn-2-border: #343434;
         --btn-2-hover-border: #353535;
+
+        --btn-3: #f1f1f1;
+        --btn-3-hover: #d9d9d9;
+        --btn-3-border: #f1f1f1;
+        --btn-3-hover-border: #d9d9d9;
 
         --radius-none: 0;
         --radius-small: 0.25rem;
@@ -125,6 +131,16 @@ span {
 
 html {
     background-color: var(--background);
+}
+
+.icon_12 {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.icon_16 {
+    width: 1rem;
+    height: 1rem;
 }
 
 .icon_24 {
@@ -230,6 +246,17 @@ input:focus {
     border: 1px solid var(--btn-2-hover-border);
 }
 
+.btn-3 {
+    background-color: var(--btn-3);
+    border: 1px solid var(--btn-3-border);
+    color: var(--text-9);
+}
+
+.btn-3:hover {
+    background-color: var(--btn-3-hover);
+    border: 1px solid var(--btn-3-hover-border);
+}
+
 .btn-sm {
     padding: 0.5rem 1rem;
 }
@@ -239,6 +266,26 @@ input:focus {
 }
 .btn-lg {
     padding: 1rem 1.75rem;
+}
+
+.btn-wh-xs {
+    padding: 0.25rem;
+}
+
+.btn-wh-sm {
+    padding: 0.5rem;
+}
+
+.btn-wh-m {
+    padding: 0.75rem;
+}
+
+.btn-wh-lg {
+    padding: 1rem;
+}
+
+.btn-round-square {
+    border-radius: 0.25rem;
 }
 
 .btn-round {

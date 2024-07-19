@@ -3,7 +3,6 @@ import { useState } from "react";
 // 서비스
 // 컴포넌트
 // 아이콘
-import { Menu } from "lucide-react";
 // 스타일
 import "./style.css";
 
