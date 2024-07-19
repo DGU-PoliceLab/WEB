@@ -121,6 +121,7 @@ const EventTable = ({ data }) => {
             <tr>
                 <th className="time">이벤트 발생 일시</th>
                 <th className="type">이벤트명</th>
+                <th className="dummy"></th>
                 <th className="check">이벤트 확인 일시</th>
                 <th className="detail"></th>
             </tr>
@@ -137,8 +138,9 @@ const EvnetItem = ({ data }) => {
         <tr className="eventItem">
             <td className="time">{event.evnet_time}</td>
             <td className="type">{event.evnet_type}</td>
+            <td className="dummy"></td>
             <td className="check">{event.evnet_time}</td>
-            <td className="time">
+            <td className="detail">
                 <button>이벤트 상세 보기</button>
             </td>
         </tr>

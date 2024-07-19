@@ -3,10 +3,11 @@
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
-    min-width: fit-content;
+    overflow: scroll;
 }
 
 #partialEventList > .headerWrap {
+    position: sticky;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -28,15 +29,18 @@
 
 #partialEventList > .headerWrap > .funcWrap > button {
     padding: 0.375rem 0.625rem;
-    background-color: var(--col-gray-scale-3);
-    border: 1px solid var(--col-gray-scale-4);
-    border-radius: var(--radius-small);
+    background-color: var(--btn);
+    border: 1px solid var(--btn-border);
+    transition: 0.25s;
+}
+#partialEventList > .headerWrap > .funcWrap > button:hover {
+    background-color: var(--btn-hover);
+    border: 1px solid var(--btn-hover-border);
 }
 
 #partialEventList > .eventTable {
     width: 100%;
     min-width: fit-content;
-    overflow: scroll;
 }
 
 #partialEventList > .eventTable > tr > th {
@@ -49,10 +53,34 @@
     text-align: left;
 }
 
-#partialEventList > .eventTable .time {
+#partialEventList > .eventTable > tr > td > button {
+    padding: 0.5rem 0.75rem;
+    background-color: var(--col-gray-scale-3);
+    border: 1px solid var(--col-gray-scale-4);
+    transition: 0.25s;
+}
+#partialEventList > .eventTable > tr > td > button:hover {
+    background-color: var(--col-gray-scale-4);
+    border: 1px solid var(--col-gray-scale-5);
+}
+
+#partialEventList > .eventTable .time,
+#partialEventList > .eventTable .check {
     width: 15%;
+    min-width: 200px;
 }
 
 #partialEventList > .eventTable .type {
     width: 15%;
+    min-width: 100px;
+}
+
+#partialEventList > .eventTable .detail {
+    width: 15%;
+    min-width: 200px;
+}
+
+#partialEventList > .eventTable .dummy {
+    width: 100%;
+    min-width: 0;
 }

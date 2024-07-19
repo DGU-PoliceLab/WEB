@@ -45,6 +45,11 @@
         --col-gray-scale-8: #eeeeee;
         --col-gray-scale-9: #ffffff;
 
+        --btn: #555555;
+        --btn-hover: #666666;
+        --btn-border: #666666;
+        --btn-hover-border: #999999;
+
         --radius-none: 0;
         --radius-small: 0.25rem;
         --radius-medium: 0.375rem;
