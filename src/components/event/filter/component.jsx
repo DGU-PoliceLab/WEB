@@ -143,7 +143,7 @@ const EventFilter = () => {
                 setStartDatetime(s_datetime);
                 setEndDatetime(e_datetime);
                 break;
-            case "disable":
+            case "init":
                 setStartDatetime(null);
                 setEndDatetime(null);
                 break;
@@ -262,10 +262,10 @@ const EventFilter = () => {
                             <button
                                 className="btn-1 btn-sm btn-round-square"
                                 onClick={() => {
-                                    updateDatetime("disable");
+                                    updateDatetime("init");
                                 }}
                             >
-                                사용 안함
+                                초기화
                             </button>
                         </div>
                     </div>
