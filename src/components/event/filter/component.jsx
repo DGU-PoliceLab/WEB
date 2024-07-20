@@ -1,5 +1,5 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import ko from "date-fns/locale/ko";
 // import "react-datepicker/dist/react-datepicker.css";
@@ -7,7 +7,7 @@ import ko from "date-fns/locale/ko";
 
 // 컴포넌트
 // 유틸
-import { get_datetime_obj } from "@/utils/time";
+import { get_datetime } from "@/utils/time";
 // 아이콘
 import {
     Filter,
@@ -16,6 +16,7 @@ import {
     TableProperties,
     RotateCw,
     Check,
+    X,
 } from "lucide-react";
 // 스타일
 import "./style.css";
@@ -38,8 +39,9 @@ const EventFilter = () => {
         "자해",
         "폭행",
     ]);
-    const [startDatetime, setStartDatetime] = useState(new Date());
-    const [endDatetime, setEndDatetime] = useState(new Date());
+    const [datetime, setDatetime] = useState("");
+    const [startDatetime, setStartDatetime] = useState(null);
+    const [endDatetime, setEndDatetime] = useState(null);
     const [location, setLocation] = useState([]);
     const [type, setType] = useState([]);
     const initFocus = () => {
@@ -64,7 +66,7 @@ const EventFilter = () => {
     };
     const initFilter = () => {
         initFocus();
-        setDatetime([]);
+        setDatetime("");
         initSelect("location");
         initSelect("type");
     };
@@ -97,12 +99,74 @@ const EventFilter = () => {
         }
     };
 
+    const updateDatetime = (period) => {
+        const now = new Date();
+        let s_datetime = new Date();
+        let e_datetime = new Date();
+        switch (period) {
+            case "today":
+                s_datetime = new Date(s_datetime.setHours(0));
+                s_datetime = new Date(s_datetime.setMinutes(0));
+                setStartDatetime(s_datetime);
+                setEndDatetime(e_datetime);
+                break;
+
+            case "yesterday":
+                s_datetime = new Date(
+                    s_datetime.setDate(s_datetime.getDate() - 1)
+                );
+                e_datetime = new Date(
+                    e_datetime.setDate(e_datetime.getDate() - 1)
+                );
+                s_datetime = new Date(s_datetime.setHours(0));
+                s_datetime = new Date(s_datetime.setMinutes(0));
+                e_datetime = new Date(e_datetime.setHours(23));
+                e_datetime = new Date(e_datetime.setMinutes(59));
+                setStartDatetime(s_datetime);
+                setEndDatetime(e_datetime);
+                break;
+            case "week":
+                s_datetime = new Date(
+                    s_datetime.setDate(s_datetime.getDate() - 6)
+                );
+                s_datetime = new Date(s_datetime.setHours(0));
+                s_datetime = new Date(s_datetime.setMinutes(0));
+                setStartDatetime(s_datetime);
+                setEndDatetime(e_datetime);
+                break;
+            case "month":
+                s_datetime = new Date(
+                    s_datetime.setDate(s_datetime.getDate() - 30)
+                );
+                s_datetime = new Date(s_datetime.setHours(0));
+                s_datetime = new Date(s_datetime.setMinutes(0));
+                setStartDatetime(s_datetime);
+                setEndDatetime(e_datetime);
+                break;
+            case "disable":
+                setStartDatetime(null);
+                setEndDatetime(null);
+                break;
+            default:
+                setStartDatetime(s_datetime);
+                setEndDatetime(e_datetime);
+        }
+    };
+    useEffect(() => {
+        if (startDatetime !== null && endDatetime !== null) {
+            const s_datetime = get_datetime(startDatetime);
+            const e_datetime = get_datetime(endDatetime);
+            setDatetime(`${s_datetime.str} - ${e_datetime.str}`);
+        } else {
+            setDatetime("");
+        }
+    }, [startDatetime, endDatetime]);
     return (
         <div className="eventFilter">
             <div className="optionWrap">
                 <div className="resetWrap">
                     <button
-                        className="btn-3 btn-wh-sm btn-round-square"
+                        className="btn-3 btn-wh-m btn-round-square"
                         onClick={initFilter}
                     >
                         <RotateCw className="icon_16" />
@@ -118,11 +182,15 @@ const EventFilter = () => {
                         checked={isOpenDatetime}
                     />
                     <label
-                        className="btn-1 btn-sm btn-round-square"
+                        className={
+                            datetime == ""
+                                ? "btn-1 btn-sm btn-round-square"
+                                : "btn-1 btn-sm btn-round-square active"
+                        }
                         htmlFor="datetime"
                     >
                         <CalendarClock />
-                        날짜 및 시간
+                        날짜 및 시간 ({datetime})
                     </label>
                     <div className="dropDownWrap datetime">
                         <div className="detailWrap">
@@ -159,17 +227,45 @@ const EventFilter = () => {
                             </div>
                         </div>
                         <div className="shortCutWrap">
-                            <button className="btn-1 btn-sm btn-round-square">
+                            <button
+                                className="btn-1 btn-sm btn-round-square"
+                                onClick={() => {
+                                    updateDatetime("today");
+                                }}
+                            >
                                 오늘
                             </button>
-                            <button className="btn-1 btn-sm btn-round-square">
+                            <button
+                                className="btn-1 btn-sm btn-round-square"
+                                onClick={() => {
+                                    updateDatetime("yesterday");
+                                }}
+                            >
                                 어제
                             </button>
-                            <button className="btn-1 btn-sm btn-round-square">
+                            <button
+                                className="btn-1 btn-sm btn-round-square"
+                                onClick={() => {
+                                    updateDatetime("week");
+                                }}
+                            >
                                 일주일
                             </button>
-                            <button className="btn-1 btn-sm btn-round-square">
+                            <button
+                                className="btn-1 btn-sm btn-round-square"
+                                onClick={() => {
+                                    updateDatetime("month");
+                                }}
+                            >
                                 한달
+                            </button>
+                            <button
+                                className="btn-1 btn-sm btn-round-square"
+                                onClick={() => {
+                                    updateDatetime("disable");
+                                }}
+                            >
+                                사용 안함
                             </button>
                         </div>
                     </div>
