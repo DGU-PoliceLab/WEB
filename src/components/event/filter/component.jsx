@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import ko from "date-fns/locale/ko";
-// import "react-datepicker/dist/react-datepicker.css";
 // 서비스
-
 // 컴포넌트
 // 유틸
 import { get_datetime } from "@/utils/time";
@@ -190,7 +188,7 @@ const EventFilter = () => {
                         htmlFor="datetime"
                     >
                         <CalendarClock />
-                        날짜 및 시간 ({datetime})
+                        날짜 및 시간{datetime && <>({datetime})</>}
                     </label>
                     <div className="dropDownWrap datetime">
                         <div className="detailWrap">
@@ -288,7 +286,8 @@ const EventFilter = () => {
                         htmlFor="location"
                     >
                         <MapPin />
-                        발생 위치 ({location.join(", ")})
+                        발생 위치
+                        {location.length !== 0 && <>({location.join(", ")})</>}
                     </label>
                     <div className="dropDownWrap">
                         <div className="summaryWrap">
@@ -334,7 +333,8 @@ const EventFilter = () => {
                         htmlFor="type"
                     >
                         <TableProperties />
-                        발생 이벤트 ({type.join(", ")})
+                        발생 이벤트
+                        {type.length !== 0 && <>({type.join(", ")})</>}
                     </label>
                     <div className="dropDownWrap">
                         <div className="summaryWrap">

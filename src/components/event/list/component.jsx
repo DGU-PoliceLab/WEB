@@ -1,5 +1,5 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // 서비스
 // 컴포넌트
 // 아이콘
@@ -65,47 +65,111 @@ const testData = [
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
         event_time: "2024.05.02 17:42.34",
     },
     {
         event_type: "폭행",
-        event_location: "유치실1",
+        event_location: "유치실2",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실2",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실2",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
+        event_time: "2024.05.02 17:42.34",
+    },
+    {
+        event_type: "폭행",
+        event_location: "유치실3",
         event_time: "2024.05.02 17:42.34",
     },
 ];
 
 const EventList = () => {
+    const [data, setDate] = useState(testData);
+    const [curPage, setCurPage] = useState(0);
+    const [lastPage, setLastPage] = useState(0);
+    const [perPage, setPerPage] = useState(10);
+
+    useEffect(() => {
+        setCurPage(0);
+        setLastPage(Math.floor(data.length / perPage));
+    }, [data]);
     return (
         <div id="eventList">
             <div className="headerWrap">
@@ -117,37 +181,77 @@ const EventList = () => {
                 </div>
             </div>
             <div className="tableWrap">
-                <EventTable data={testData} />
+                <EventTable
+                    data={data}
+                    curPage={curPage}
+                    lastPage={lastPage}
+                    perPage={perPage}
+                />
             </div>
             <div className="pageControlWrap">
-                <PageController />
+                <PageController
+                    curPage={curPage}
+                    lastPage={lastPage}
+                    changePage={setCurPage}
+                />
             </div>
         </div>
     );
 };
 
-const PageController = () => {
+const PageController = ({ curPage, lastPage, changePage }) => {
+    const first = () => {
+        changePage(0);
+    };
+    const last = () => {
+        changePage(lastPage);
+    };
+    const prev = () => {
+        if (curPage > 0) {
+            changePage(curPage - 1);
+        }
+    };
+    const next = () => {
+        if (curPage < lastPage) {
+            changePage(curPage + 1);
+        }
+    };
     return (
         <div className="pageController">
-            <button className="btn-2 btn-wh-sm btn-round-square">
+            <button
+                className="btn-2 btn-wh-sm btn-round-square"
+                onClick={first}
+            >
                 <ChevronsLeft />
             </button>
-            <button className="btn-2 btn-wh-sm btn-round-square">
+            <button className="btn-2 btn-wh-sm btn-round-square" onClick={prev}>
                 <ChevronLeft />
             </button>
 
-            <button className="btn-2 btn-wh-sm btn-round-square">
-                <ChevronsRight />
-            </button>
-            <button className="btn-2 btn-wh-sm btn-round-square">
+            <button className="btn-2 btn-wh-sm btn-round-square" onClick={next}>
                 <ChevronRight />
+            </button>
+            <button className="btn-2 btn-wh-sm btn-round-square" onClick={last}>
+                <ChevronsRight />
             </button>
         </div>
     );
 };
 
-const EventTable = ({ data }) => {
+const EventTable = ({ data, curPage, lastPage, perPage }) => {
     const [event, setEvent] = useState(data);
+    useEffect(() => {
+        console.log("event:", event);
+    }, [event]);
+    useEffect(() => {
+        let startIdx = curPage * perPage;
+        let endIdx = (curPage + 1) * perPage;
+        if (endIdx >= data.length) {
+            endIdx = data.length;
+        }
+        console.log(startIdx, endIdx);
+        setEvent(data.slice(startIdx, endIdx));
+    }, [data, curPage, lastPage, perPage]);
     return (
         <table className="eventTable">
             <tr>
@@ -158,8 +262,8 @@ const EventTable = ({ data }) => {
                 <th className="check">이벤트 확인 일시</th>
                 <th className="detail"></th>
             </tr>
-            {event.map((data, idx) => (
-                <EventItem data={data} key={idx} />
+            {event.map((item, idx) => (
+                <EventItem data={item} key={idx} />
             ))}
         </table>
     );
