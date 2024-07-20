@@ -14,7 +14,6 @@ import {
     TableProperties,
     RotateCw,
     Check,
-    X,
 } from "lucide-react";
 // 스타일
 import "./style.css";
@@ -22,9 +21,11 @@ import "./datetimepicker.css";
 
 const EventFilter = () => {
     const [currentOpen, setCurrnetOpen] = useState("");
+    // 메뉴 열림 상태
     const [isOpenDatetime, setIsOpenDatetime] = useState(false);
     const [isOpenLocation, setIsOpenLocation] = useState(false);
     const [isOpenType, setIsOpenType] = useState(false);
+    // 메뉴 구성 데이터
     const [locations, setLocations] = useState([
         "유치실 1",
         "유치실 2",
@@ -37,16 +38,19 @@ const EventFilter = () => {
         "자해",
         "폭행",
     ]);
+    // 사용자 선택 옵션
     const [datetime, setDatetime] = useState("");
     const [startDatetime, setStartDatetime] = useState(null);
     const [endDatetime, setEndDatetime] = useState(null);
     const [location, setLocation] = useState([]);
     const [type, setType] = useState([]);
+    // 현재 포커스중인 메뉴 확인
     const initFocus = () => {
         setIsOpenDatetime(false);
         setIsOpenLocation(false);
         setIsOpenType(false);
     };
+    // 포커스 메뉴 변경
     const changeFocus = (sel) => {
         initFocus();
         if (sel == currentOpen) {
@@ -62,13 +66,14 @@ const EventFilter = () => {
             setCurrnetOpen("type");
         }
     };
+    // 사용자 선택 옵션 초기화
     const initFilter = () => {
         initFocus();
         setDatetime("");
         initSelect("location");
         initSelect("type");
     };
-
+    // 사용자 선택 옵션 초기화(메뉴)
     const initSelect = (target) => {
         const query = `input[name="${target}"]:checked`;
         const selectedEls = document.querySelectorAll(query);
@@ -82,6 +87,7 @@ const EventFilter = () => {
             setType([]);
         }
     };
+    // 사용자 선택 옵션 업데이트(메뉴)
     const updateSelect = (target) => {
         const query = `input[name="${target}"]:checked`;
         const selectedEls = document.querySelectorAll(query);
@@ -96,7 +102,7 @@ const EventFilter = () => {
             setType(selected);
         }
     };
-
+    // 시용자 선택 시간 업데이트
     const updateDatetime = (period) => {
         const now = new Date();
         let s_datetime = new Date();
@@ -164,7 +170,13 @@ const EventFilter = () => {
             <div className="optionWrap">
                 <div className="resetWrap">
                     <button
-                        className="btn-3 btn-wh-m btn-round-square"
+                        className={
+                            datetime == "" &&
+                            location.length == 0 &&
+                            type.length == 0
+                                ? "btn-1 btn-wh-m btn-round-square"
+                                : "btn-3 btn-wh-m btn-round-square"
+                        }
                         onClick={initFilter}
                     >
                         <RotateCw className="icon_16" />

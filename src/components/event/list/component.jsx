@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 // 서비스
 // 컴포넌트
+// 유틸
+import { num_to_array } from "@/utils/array";
 // 아이콘
 import {
     ChevronLeft,
@@ -162,6 +164,7 @@ const testData = [
 
 const EventList = () => {
     const [data, setDate] = useState(testData);
+    const [pageData, setPageData] = useState([]);
     const [curPage, setCurPage] = useState(0);
     const [lastPage, setLastPage] = useState(0);
     const [perPage, setPerPage] = useState(10);
@@ -170,6 +173,18 @@ const EventList = () => {
         setCurPage(0);
         setLastPage(Math.floor(data.length / perPage));
     }, [data]);
+    useEffect(() => {
+        console.log(pageData);
+    }, [pageData]);
+    useEffect(() => {
+        let startIdx = curPage * perPage;
+        let endIdx = (curPage + 1) * perPage;
+        if (endIdx >= data.length) {
+            endIdx = data.length;
+        }
+        console.log(startIdx, endIdx);
+        setPageData(data.slice(startIdx, endIdx));
+    }, [data, curPage, lastPage, perPage]);
     return (
         <div id="eventList">
             <div className="headerWrap">
@@ -181,12 +196,7 @@ const EventList = () => {
                 </div>
             </div>
             <div className="tableWrap">
-                <EventTable
-                    data={data}
-                    curPage={curPage}
-                    lastPage={lastPage}
-                    perPage={perPage}
-                />
+                <EventTable data={pageData} />
             </div>
             <div className="pageControlWrap">
                 <PageController
@@ -199,7 +209,43 @@ const EventList = () => {
     );
 };
 
+const EventTable = ({ data }) => {
+    return (
+        <table className="eventTable">
+            <tr>
+                <th className="location">이벤트 발생 위치</th>
+                <th className="time">이벤트 발생 일시</th>
+                <th className="type">이벤트명</th>
+                <th className="dummy"></th>
+                <th className="check">이벤트 확인 일시</th>
+                <th className="detail"></th>
+            </tr>
+            {data.map((item, idx) => (
+                <EventItem data={item} key={idx} />
+            ))}
+        </table>
+    );
+};
+
+const EventItem = ({ data }) => {
+    return (
+        <tr className="eventItem">
+            <td className="location">{data.event_location}</td>
+            <td className="time">{data.event_time}</td>
+            <td className="type">{data.event_type}</td>
+            <td className="dummy"></td>
+            <td className="check">{data.event_time}</td>
+            <td className="detail">
+                <button className="btn-1 btn-m btn-round">
+                    이벤트 상세 보기
+                </button>
+            </td>
+        </tr>
+    );
+};
+
 const PageController = ({ curPage, lastPage, changePage }) => {
+    const [indicator, setIndicator] = useState([]);
     const first = () => {
         changePage(0);
     };
@@ -216,6 +262,10 @@ const PageController = ({ curPage, lastPage, changePage }) => {
             changePage(curPage + 1);
         }
     };
+    useEffect(() => {
+        const indArray = num_to_array(lastPage);
+        setIndicator(indArray);
+    }, [lastPage]);
     return (
         <div className="pageController">
             <button
@@ -227,7 +277,23 @@ const PageController = ({ curPage, lastPage, changePage }) => {
             <button className="btn-2 btn-wh-sm btn-round-square" onClick={prev}>
                 <ChevronLeft />
             </button>
-
+            <div className="indicatorWrap">
+                {indicator.map((item, idx) => (
+                    <button
+                        className={
+                            idx == curPage
+                                ? "indicator btn-3 btn-wh-sm btn-round-square"
+                                : "indicator btn-1 btn-wh-sm btn-round-square"
+                        }
+                        key={`indicator${idx}`}
+                        onClick={() => {
+                            changePage(idx);
+                        }}
+                    >
+                        <span>{item}</span>
+                    </button>
+                ))}
+            </div>
             <button className="btn-2 btn-wh-sm btn-round-square" onClick={next}>
                 <ChevronRight />
             </button>
@@ -235,55 +301,6 @@ const PageController = ({ curPage, lastPage, changePage }) => {
                 <ChevronsRight />
             </button>
         </div>
-    );
-};
-
-const EventTable = ({ data, curPage, lastPage, perPage }) => {
-    const [event, setEvent] = useState(data);
-    useEffect(() => {
-        console.log("event:", event);
-    }, [event]);
-    useEffect(() => {
-        let startIdx = curPage * perPage;
-        let endIdx = (curPage + 1) * perPage;
-        if (endIdx >= data.length) {
-            endIdx = data.length;
-        }
-        console.log(startIdx, endIdx);
-        setEvent(data.slice(startIdx, endIdx));
-    }, [data, curPage, lastPage, perPage]);
-    return (
-        <table className="eventTable">
-            <tr>
-                <th className="location">이벤트 발생 위치</th>
-                <th className="time">이벤트 발생 일시</th>
-                <th className="type">이벤트명</th>
-                <th className="dummy"></th>
-                <th className="check">이벤트 확인 일시</th>
-                <th className="detail"></th>
-            </tr>
-            {event.map((item, idx) => (
-                <EventItem data={item} key={idx} />
-            ))}
-        </table>
-    );
-};
-
-const EventItem = ({ data }) => {
-    const [event, setEvent] = useState(data);
-    return (
-        <tr className="eventItem">
-            <td className="location">{event.event_location}</td>
-            <td className="time">{event.event_time}</td>
-            <td className="type">{event.event_type}</td>
-            <td className="dummy"></td>
-            <td className="check">{event.event_time}</td>
-            <td className="detail">
-                <button className="btn-1 btn-m btn-round">
-                    이벤트 상세 보기
-                </button>
-            </td>
-        </tr>
     );
 };
 
