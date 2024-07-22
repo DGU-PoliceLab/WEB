@@ -1,8 +1,9 @@
 // 라이브러리
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 // 서비스
+import { cctvRead } from "@/services/cctvService";
 // 컴포넌트
+import CctvRegister from "@/components/cctv/register/component";
 import CctvModify from "../modify/component";
 import CctvDelete from "../delete/component";
 import Dimmed from "@/components/dimmed/component";
@@ -10,124 +11,23 @@ import Dimmed from "@/components/dimmed/component";
 // 스타일
 import "./style.css";
 
-const testData = [
-    {
-        id: 1,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 2,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 3,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 1,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 2,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 3,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 1,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 2,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 3,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 1,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 2,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 3,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 1,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 2,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 3,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 1,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 2,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-    {
-        id: 3,
-        name: "엣지카메라",
-        url: "rtsp://~~~",
-        createat: "2024. 04. 03. 17:29:19",
-    },
-];
-
-const CctvList = ({ toggle }) => {
-    const navigate = useNavigate();
+const CctvList = () => {
     const [target, setTarget] = useState(false);
     const [method, setMethod] = useState("");
+    const [cctvData, setCctvData] = useState([]);
+    const getCctvData = async () => {
+        const response = await cctvRead();
+        if (response != null) {
+            setCctvData(response);
+        } else {
+            setCctvData([]);
+        }
+    };
     useEffect(() => {
         if (target == false) {
             setMethod("");
+            console.log("load new data");
+            getCctvData();
         }
     }, [target]);
     return (
@@ -138,7 +38,8 @@ const CctvList = ({ toggle }) => {
                     <button
                         className="btn-2 btn-m btn-round"
                         onClick={() => {
-                            toggle(true);
+                            setTarget(true);
+                            setMethod("register");
                         }}
                     >
                         CCTV 등록
@@ -149,9 +50,16 @@ const CctvList = ({ toggle }) => {
                 <CctvTable
                     setTarget={setTarget}
                     setMethod={setMethod}
-                    data={testData}
+                    data={cctvData}
+                    key={cctvData}
                 />
             </div>
+            {target && method == "register" && (
+                <Dimmed
+                    toggle={setTarget}
+                    child={<CctvRegister toggle={setTarget} />}
+                ></Dimmed>
+            )}
             {target && method == "modify" && (
                 <Dimmed
                     toggle={setTarget}
@@ -169,7 +77,10 @@ const CctvList = ({ toggle }) => {
 };
 
 const CctvTable = ({ setTarget, setMethod, data }) => {
-    const [cctv, setCctv] = useState(data);
+    const [cctvData, setCctvData] = useState([]);
+    useEffect(() => {
+        setCctvData(data);
+    }, []);
     return (
         <table className="cctvTable">
             <tr>
@@ -180,11 +91,11 @@ const CctvTable = ({ setTarget, setMethod, data }) => {
                 <th className="rename"></th>
                 <th className="delete"></th>
             </tr>
-            {cctv.map((data, idx) => (
+            {cctvData.map((item, idx) => (
                 <CctvItem
                     setTarget={setTarget}
                     setMethod={setMethod}
-                    data={data}
+                    data={item}
                     key={idx}
                 />
             ))}
@@ -193,18 +104,29 @@ const CctvTable = ({ setTarget, setMethod, data }) => {
 };
 
 const CctvItem = ({ setTarget, setMethod, data }) => {
-    const [cctv, setCctv] = useState(data);
+    const [cctvInfo, setCctvInfo] = useState({});
+    const parseData = (info) => {
+        let parsed = {};
+        parsed["id"] = info[0];
+        parsed["name"] = info[1];
+        parsed["url"] = info[2];
+        parsed["createat"] = info[3];
+        setCctvInfo(parsed);
+    };
+    useEffect(() => {
+        parseData(data);
+    }, []);
     return (
         <tr className="cctvItem">
-            <td className="id">{cctv.id}</td>
-            <td className="name">{cctv.name}</td>
-            <td className="url">{cctv.url}</td>
-            <td className="createat">{cctv.createat}</td>
+            <td className="id">{cctvInfo.id}</td>
+            <td className="name">{cctvInfo.name}</td>
+            <td className="url">{cctvInfo.url}</td>
+            <td className="createat">{cctvInfo.createat}</td>
             <td className="rename">
                 <button
                     className="btn-1 btn-m btn-round"
                     onClick={() => {
-                        setTarget(data);
+                        setTarget(cctvInfo);
                         setMethod("modify");
                     }}
                 >
@@ -215,7 +137,7 @@ const CctvItem = ({ setTarget, setMethod, data }) => {
                 <button
                     className="btn-1 btn-m btn-round"
                     onClick={() => {
-                        setTarget(data);
+                        setTarget(cctvInfo);
                         setMethod("delete");
                     }}
                 >

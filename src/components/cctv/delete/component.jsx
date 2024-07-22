@@ -1,19 +1,24 @@
 // 라이브러리
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // 서비스
+import { cctvDelete } from "@/services/cctvService";
 // 컴포넌트
 // 아이콘
 import { Cctv, AlertTriangle } from "lucide-react";
 // 스타일
 import "./style.css";
-import StreamView from "@/components/streamview/component";
 
 const CctvDelete = ({ toggle, data }) => {
     const [cctv, setCctv] = useState(data);
-    const update = (key, value) => {
-        let cctvInfo = { ...cctv };
-        cctvInfo[key] = value;
-        setCctv(cctvInfo);
+    const funcDelete = async () => {
+        const target = cctv.id;
+        const response = await cctvDelete(target);
+        if (response) {
+            window.alert("성공적으로 삭제되었습니다.");
+            toggle(false);
+        } else {
+            window.alert("삭제에 실패하였습니다.");
+        }
     };
     return (
         <div id="cctvDelete">
@@ -47,7 +52,14 @@ const CctvDelete = ({ toggle, data }) => {
                 </div>
             </div>
             <div className="footerWrap">
-                <button className="btn-2 btn-lg btn-round">삭제</button>
+                <button
+                    className="btn-2 btn-lg btn-round"
+                    onClick={() => {
+                        funcDelete();
+                    }}
+                >
+                    삭제
+                </button>
                 <button
                     className="btn-1 btn-lg btn-round"
                     onClick={() => {

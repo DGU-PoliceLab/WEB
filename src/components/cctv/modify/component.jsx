@@ -1,6 +1,7 @@
 // 라이브러리
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // 서비스
+import { cctvUpdate } from "@/services/cctvService";
 // 컴포넌트
 // 아이콘
 import { Cctv } from "lucide-react";
@@ -14,6 +15,18 @@ const CctvModify = ({ toggle, data }) => {
         let cctvInfo = { ...cctv };
         cctvInfo[key] = value;
         setCctv(cctvInfo);
+    };
+    const funcModify = async () => {
+        const target = cctv.id;
+        const name = cctv.name;
+        const url = cctv.url;
+        const response = await cctvUpdate(target, name, url);
+        if (response) {
+            window.alert("성공적으로 수정되었습니다.");
+            toggle(false);
+        } else {
+            window.alert("수정에 실패하였습니다.");
+        }
     };
     return (
         <div id="cctvModify">
@@ -59,7 +72,14 @@ const CctvModify = ({ toggle, data }) => {
                 <StreamView />
             </div>
             <div className="footerWrap">
-                <button className="btn-2 btn-lg btn-round">등록</button>
+                <button
+                    className="btn-2 btn-lg btn-round"
+                    onClick={() => {
+                        funcModify();
+                    }}
+                >
+                    수정
+                </button>
                 <button
                     className="btn-1 btn-lg btn-round"
                     onClick={() => {

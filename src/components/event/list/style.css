@@ -73,7 +73,7 @@
 
 #eventList > .tableWrap > .eventTable .type {
     width: 10%;
-    min-width: 100px;
+    min-width: 160px;
 }
 
 #eventList > .tableWrap > .eventTable .detail {

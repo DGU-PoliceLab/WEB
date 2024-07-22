@@ -13,61 +13,37 @@ const testData = [
     {
         id: 0,
         name: "유치실 1",
-        url: "",
+        url: "rtsp://210.99.70.120:1935/live/cctv001.stream",
         event: false,
     },
     {
         id: 2,
         name: "유치실 2",
-        url: "",
+        url: "rtsp://210.99.70.120:1935/live/cctv002.stream",
         event: true,
     },
     {
         id: 3,
         name: "유치실 3",
-        url: "",
+        url: "rtsp://210.99.70.120:1935/live/cctv003.stream",
         event: false,
     },
     {
         id: 4,
         name: "유치실 4",
-        url: "",
+        url: "rtsp://210.99.70.120:1935/live/cctv004.stream",
         event: false,
     },
     {
         id: 5,
         name: "유치실 5",
-        url: "",
+        url: "rtsp://210.99.70.120:1935/live/cctv005.stream",
         event: false,
     },
     {
-        id: 0,
-        name: "유치실 1",
-        url: "",
-        event: false,
-    },
-    {
-        id: 2,
-        name: "유치실 2",
-        url: "",
-        event: true,
-    },
-    {
-        id: 3,
-        name: "유치실 3",
-        url: "",
-        event: false,
-    },
-    {
-        id: 4,
-        name: "유치실 4",
-        url: "",
-        event: false,
-    },
-    {
-        id: 5,
-        name: "유치실 5",
-        url: "",
+        id: 6,
+        name: "유치실 6",
+        url: "rtsp://210.99.70.120:1935/live/cctv006.stream",
         event: false,
     },
 ];
@@ -105,7 +81,7 @@ const View = ({ id = 0, name = "유치실", url = "rtsp://", event = false }) =>
                 </div>
             </div>
             <div className="contentWrap">
-                <StreamView />
+                <StreamView url={url} />
             </div>
         </div>
     );

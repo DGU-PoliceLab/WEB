@@ -14,177 +14,28 @@ import {
 // 스타일
 import "./style.css";
 
-const testData = [
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실1",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실2",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-    {
-        event_type: "폭행",
-        event_location: "유치실3",
-        event_time: "2024.05.02 17:42.34",
-    },
-];
-
-const EventList = () => {
-    const [data, setDate] = useState(testData);
+const EventList = ({ data }) => {
+    const [logData, setLogDate] = useState([]);
     const [pageData, setPageData] = useState([]);
     const [curPage, setCurPage] = useState(0);
     const [lastPage, setLastPage] = useState(0);
     const [perPage, setPerPage] = useState(10);
 
     useEffect(() => {
-        setCurPage(0);
-        setLastPage(Math.floor(data.length / perPage));
-    }, [data]);
+        setLogDate(data);
+    }, []);
     useEffect(() => {
-        console.log(pageData);
-    }, [pageData]);
+        setCurPage(0);
+        setLastPage(Math.floor(logData.length / perPage));
+    }, [logData]);
     useEffect(() => {
         let startIdx = curPage * perPage;
         let endIdx = (curPage + 1) * perPage;
-        if (endIdx >= data.length) {
-            endIdx = data.length;
+        if (endIdx >= logData.length) {
+            endIdx = logData.length;
         }
-        console.log(startIdx, endIdx);
-        setPageData(data.slice(startIdx, endIdx));
-    }, [data, curPage, lastPage, perPage]);
+        setPageData(logData.slice(startIdx, endIdx));
+    }, [logData, curPage, lastPage, perPage]);
     return (
         <div id="eventList">
             <div className="headerWrap">
@@ -196,7 +47,7 @@ const EventList = () => {
                 </div>
             </div>
             <div className="tableWrap">
-                <EventTable data={pageData} />
+                <EventTable data={pageData} key={pageData} />
             </div>
             <div className="pageControlWrap">
                 <PageController
@@ -228,13 +79,26 @@ const EventTable = ({ data }) => {
 };
 
 const EventItem = ({ data }) => {
+    const [logInfo, setLogInfo] = useState({});
+    const parseData = (info) => {
+        let parsed = {};
+        parsed["id"] = info[0];
+        parsed["type"] = info[1];
+        parsed["location"] = info[2];
+        parsed["occured"] = info[3];
+        parsed["checked"] = info[4];
+        setLogInfo(parsed);
+    };
+    useEffect(() => {
+        parseData(data);
+    }, []);
     return (
         <tr className="eventItem">
-            <td className="location">{data.event_location}</td>
-            <td className="time">{data.event_time}</td>
-            <td className="type">{data.event_type}</td>
+            <td className="location">{logInfo.location}</td>
+            <td className="time">{logInfo.occured}</td>
+            <td className="type">{logInfo.type}</td>
             <td className="dummy"></td>
-            <td className="check">{data.event_time}</td>
+            <td className="check">{logInfo.checked}</td>
             <td className="detail">
                 <button className="btn-1 btn-m btn-round">
                     이벤트 상세 보기

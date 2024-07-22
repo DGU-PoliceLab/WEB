@@ -1,23 +1,53 @@
 // 라이브러리
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // 서비스
+import { logRead } from "@/services/logService";
 // 컴포넌트
 import EventFilter from "@/components/event/filter/component";
 import EventList from "@/components/event/list/component";
-
 // import Dimmed from "@/components/dimmed/component";
 // 아이콘
 // 스타일
 import "./style.css";
 
 const EventManagePage = () => {
+    const [log, setLog] = useState([]);
+    const [datetime, setDatetime] = useState("");
+    const [startDatetime, setStartDatetime] = useState(null);
+    const [endDatetime, setEndDatetime] = useState(null);
+    const [location, setLocation] = useState([]);
+    const [type, setType] = useState([]);
+    const getLogData = async () => {
+        const response = await logRead();
+        console.log(response);
+        if (response != null) {
+            setLog(response);
+            console.log(response);
+        } else {
+            setLog([]);
+        }
+    };
+    useEffect(() => {
+        getLogData();
+    }, [startDatetime, endDatetime, location, type]);
     return (
         <div id="eventManagePage" className="page">
             <div className="filterContainer">
-                <EventFilter />
+                <EventFilter
+                    datetime={datetime}
+                    setDatetime={setDatetime}
+                    startDatetime={startDatetime}
+                    setStartDatetime={setStartDatetime}
+                    endDatetime={endDatetime}
+                    setEndDatetime={setEndDatetime}
+                    location={location}
+                    setLocation={setLocation}
+                    type={type}
+                    setType={setType}
+                />
             </div>
             <div className="eventContainer">
-                <EventList />
+                <EventList data={log} key={log.length} />
             </div>
         </div>
     );

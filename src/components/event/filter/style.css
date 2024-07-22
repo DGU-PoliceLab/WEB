@@ -46,6 +46,7 @@
 }
 .eventFilter > .optionWrap > .optWrap > input + label + .dropDownWrap {
     display: none;
+    z-index: 101;
 }
 .eventFilter > .optionWrap > .optWrap > input:checked + label + .dropDownWrap {
     display: flex;

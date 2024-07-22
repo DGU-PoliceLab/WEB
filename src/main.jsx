@@ -9,6 +9,7 @@ import MultiViewPage from "./pages/multiview/page";
 import DetailViewPage from "./pages/detailview/page";
 import EventManagePage from "./pages/event/manage/page";
 import CctvManagePage from "./pages/cctv/manage/page";
+import Test from "./pages/test/page";
 // 스타일
 import "./index.css";
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
                 element: <CctvManagePage />,
             },
         ],
+    },
+    {
+        path: "/test",
+        element: <Test />,
     },
 ]);
 

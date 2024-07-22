@@ -1,5 +1,5 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // 서비스
 // 컴포넌트
 // 아이콘
@@ -7,9 +7,22 @@ import { useState } from "react";
 import "./style.css";
 
 const StreamView = ({ name = null, url = null }) => {
+    const [rtspUrl, setRtspUrl] = useState("");
+    const conv = (strUrl) => {
+        let stream = "http://localhost:40000/rtsp?url=";
+        stream += btoa(url);
+        setRtspUrl(stream);
+    };
+    useEffect(() => {
+        conv(url);
+    }, []);
     return (
         <div className="streamView">
-            {url == null ? <p>No Signal</p> : <div></div>}
+            {url == null ? (
+                <p>No Signal</p>
+            ) : (
+                <img src={rtspUrl} alt="" srcset="" />
+            )}
         </div>
     );
 };

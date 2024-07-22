@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import ko from "date-fns/locale/ko";
 // 서비스
+import { locationRead } from "@/services/locationService";
+import { eventRead } from "@/services/eventService";
 // 컴포넌트
 // 유틸
 import { get_datetime } from "@/utils/time";
 // 아이콘
 import {
-    Filter,
     CalendarClock,
     MapPin,
     TableProperties,
@@ -19,31 +20,26 @@ import {
 import "./style.css";
 import "./datetimepicker.css";
 
-const EventFilter = () => {
+const EventFilter = ({
+    datetime,
+    setDatetime,
+    startDatetime,
+    setStartDatetime,
+    endDatetime,
+    setEndDatetime,
+    location,
+    setLocation,
+    type,
+    setType,
+}) => {
     const [currentOpen, setCurrnetOpen] = useState("");
     // 메뉴 열림 상태
     const [isOpenDatetime, setIsOpenDatetime] = useState(false);
     const [isOpenLocation, setIsOpenLocation] = useState(false);
     const [isOpenType, setIsOpenType] = useState(false);
     // 메뉴 구성 데이터
-    const [locations, setLocations] = useState([
-        "유치실 1",
-        "유치실 2",
-        "유치실 3",
-    ]);
-    const [types, setTypes] = useState([
-        "감정",
-        "낙상",
-        "장시간 고정자세",
-        "자해",
-        "폭행",
-    ]);
-    // 사용자 선택 옵션
-    const [datetime, setDatetime] = useState("");
-    const [startDatetime, setStartDatetime] = useState(null);
-    const [endDatetime, setEndDatetime] = useState(null);
-    const [location, setLocation] = useState([]);
-    const [type, setType] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [types, setTypes] = useState([]);
     // 현재 포커스중인 메뉴 확인
     const initFocus = () => {
         setIsOpenDatetime(false);
@@ -156,6 +152,28 @@ const EventFilter = () => {
                 setEndDatetime(e_datetime);
         }
     };
+    const getLocationData = async () => {
+        const response = await locationRead();
+        console.log(response);
+        if (response != null) {
+            setLocations(response);
+        } else {
+            setLocations([]);
+        }
+    };
+    const getEventData = async () => {
+        const response = await eventRead();
+        console.log(response);
+        if (response != null) {
+            setTypes(response);
+        } else {
+            setTypes([]);
+        }
+    };
+    useEffect(() => {
+        getLocationData();
+        getEventData();
+    }, []);
     useEffect(() => {
         if (startDatetime !== null && endDatetime !== null) {
             const s_datetime = get_datetime(startDatetime);
@@ -311,7 +329,7 @@ const EventFilter = () => {
                                     type="checkbox"
                                     name="location"
                                     id={`lddo${idx}`}
-                                    value={item}
+                                    value={item[1]}
                                     onChange={() => {
                                         updateSelect("location");
                                     }}
@@ -321,7 +339,7 @@ const EventFilter = () => {
                                     htmlFor={`lddo${idx}`}
                                 >
                                     <Check />
-                                    {item}
+                                    {item[1]}
                                 </label>
                             </>
                         ))}
@@ -358,7 +376,7 @@ const EventFilter = () => {
                                     type="checkbox"
                                     name="type"
                                     id={`tddo${idx}`}
-                                    value={item}
+                                    value={item[1]}
                                     onChange={() => {
                                         updateSelect("type");
                                     }}
@@ -368,7 +386,7 @@ const EventFilter = () => {
                                     htmlFor={`tddo${idx}`}
                                 >
                                     <Check />
-                                    {item}
+                                    {item[1]}
                                 </label>
                             </>
                         ))}
