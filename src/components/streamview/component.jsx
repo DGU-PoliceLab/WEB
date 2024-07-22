@@ -21,7 +21,10 @@ const StreamView = ({ name = null, url = null }) => {
             {url == null ? (
                 <p>No Signal</p>
             ) : (
-                <img src={rtspUrl} alt="" srcset="" />
+                <>
+                    <span className="spinner"></span>
+                    <img src={rtspUrl} alt="" srcset="" />
+                </>
             )}
         </div>
     );

@@ -67,3 +67,22 @@
     font-weight: 600;
     color: var(--text-0);
 }
+
+#header > .alarmWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--danger);
+    /* background-color: var(--danger-foreground); */
+    /* border: 1px solid var(--danger); */
+    border-radius: 4rem;
+    font-weight: 600;
+    color: var(--text-0);
+}
+
+#header > .alarmWrap > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}

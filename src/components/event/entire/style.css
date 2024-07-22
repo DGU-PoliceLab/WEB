@@ -51,6 +51,11 @@
     background-color: var(--card-hover);
 }
 
+#entireEventList > .eventWrap > .eventItem.active {
+    background-color: var(--danger-foreground);
+    border: 1px solid var(--danger);
+}
+
 #entireEventList > .eventWrap > .eventItem > .descWrap {
     display: flex;
     flex-direction: row;
@@ -68,7 +73,13 @@
 #entireEventList > .eventWrap > .eventItem .dataWrap > .title {
     color: var(--col-gray-scale-7);
 }
+#entireEventList > .eventWrap > .eventItem.active .dataWrap > .title {
+    color: var(--danger-text);
+}
 #entireEventList > .eventWrap > .eventItem .dataWrap > .content {
+}
+#entireEventList > .eventWrap > .eventItem.active .dataWrap > .content {
+    color: var(--danger-text);
 }
 
 #entireEventList > .eventWrap > .eventItem .typeWrap {

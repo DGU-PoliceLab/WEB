@@ -16,4 +16,16 @@ const logRead = async (datetime = [], location = [], types = []) => {
     }
 };
 
-export { logRead };
+const logCheck = async (target = -1) => {
+    try {
+        const response = await axios.post(ENDPOINT + "/check", {
+            target: target,
+        });
+        return response.data;
+    } catch (err) {
+        console.error("Error occured in services.logService.check", err);
+        return { err: err };
+    }
+};
+
+export { logRead, logCheck };

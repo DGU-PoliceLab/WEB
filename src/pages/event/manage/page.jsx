@@ -19,10 +19,8 @@ const EventManagePage = () => {
     const [type, setType] = useState([]);
     const getLogData = async () => {
         const response = await logRead();
-        console.log(response);
         if (response != null) {
             setLog(response);
-            console.log(response);
         } else {
             setLog([]);
         }

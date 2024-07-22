@@ -2,13 +2,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // 서비스
+import { messageLive } from "@/services/messageService";
+import { logCheck } from "@/services/logService";
 // 컴포넌트
 import MenuList from "@/components/menulist/component";
 // 유틸
 import { get_datetime } from "@/utils/time";
 // 아이콘
 import Logo from "@/assets/logo.png";
-import { Menu, ChevronRight } from "lucide-react";
+import { Menu, ChevronRight, Siren } from "lucide-react";
 // 스타일
 import "./style.css";
 
@@ -18,14 +20,40 @@ const Header = () => {
     const [title, setTitle] = useState([]);
     const [time, setTime] = useState("");
     const [isMenu, setIsMenu] = useState(false);
+    const [isNew, setIsNew] = useState(false);
+    const [message, setMessage] = useState("");
     const updateTime = () => {
         const now = get_datetime();
         setTime(now.str);
+    };
+    const parseMessage = (str) => {
+        str = "[" + str + "]";
+        const jsonString = str.replace(/'/g, '"');
+        const obj = JSON.parse(jsonString);
+        return obj;
+    };
+    const getMessage = async () => {
+        const response = await messageLive();
+        if (response != null) {
+            const responseObj = parseMessage(response);
+            if (responseObj != message && response != "") {
+                setIsNew(true);
+                setMessage(responseObj);
+            }
+        } else {
+            setMessage("");
+            setIsNew(false);
+        }
+    };
+    const checkAlarm = () => {
+        setIsNew(false);
+        logCheck();
     };
     useEffect(() => {
         updateTime();
         const timer = setInterval(() => {
             updateTime();
+            getMessage();
         }, 1000);
 
         return () => clearInterval(timer);
@@ -63,7 +91,22 @@ const Header = () => {
                     </p>
                 ))}
             </div>
-            <div className="alarmWrap"></div>
+            {isNew && (
+                <div
+                    className="alarmWrap"
+                    onClick={() => {
+                        checkAlarm();
+                    }}
+                >
+                    <Siren />
+                    {message.map((item, idx) => (
+                        <p>
+                            {item.location}에서 {item.event}발생
+                        </p>
+                    ))}
+                </div>
+            )}
+
             <div
                 className="menuWrap"
                 onClick={() => {
