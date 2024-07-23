@@ -1,5 +1,6 @@
 // 라이브러리
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // 서비스
 import { logCheck, logRead } from "@/services/logService";
 // 컴포넌트
@@ -10,6 +11,7 @@ import { get_datetime } from "@/utils/time";
 import "./style.css";
 
 const EntireEventList = () => {
+    const navigate = useNavigate();
     const [log, setLog] = useState([]);
     const getLogData = async () => {
         const response = await logRead();
@@ -46,7 +48,12 @@ const EntireEventList = () => {
                     >
                         전체 확인
                     </button>
-                    <button className="btn-2 btn-sm btn-round">
+                    <button
+                        className="btn-2 btn-sm btn-round"
+                        onClick={() => {
+                            navigate("/event");
+                        }}
+                    >
                         전체 보기
                     </button>
                 </div>

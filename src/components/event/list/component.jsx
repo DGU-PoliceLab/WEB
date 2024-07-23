@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // 서비스
 // 컴포넌트
 // 유틸
-import { num_to_array } from "@/utils/array";
+import { num_to_array, indicatorArray } from "@/utils/array";
 // 아이콘
 import {
     ChevronLeft,
@@ -127,9 +127,13 @@ const PageController = ({ curPage, lastPage, changePage }) => {
         }
     };
     useEffect(() => {
-        const indArray = num_to_array(lastPage);
+        const indArray = indicatorArray(curPage, lastPage);
         setIndicator(indArray);
-    }, [lastPage]);
+    }, [curPage]);
+    // useEffect(() => {
+    //     num_to_array(lastPage);
+
+    // }, [lastPage]);
     return (
         <div className="pageController">
             <button
@@ -145,13 +149,13 @@ const PageController = ({ curPage, lastPage, changePage }) => {
                 {indicator.map((item, idx) => (
                     <button
                         className={
-                            idx == curPage
+                            item - 1 == curPage
                                 ? "indicator btn-3 btn-wh-sm btn-round-square"
                                 : "indicator btn-1 btn-wh-sm btn-round-square"
                         }
                         key={`indicator${idx}`}
                         onClick={() => {
-                            changePage(idx);
+                            changePage(item - 1);
                         }}
                     >
                         <span>{item}</span>
