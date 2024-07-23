@@ -228,7 +228,8 @@ select {
     appearance: none; /* 화살표 없애기 */
 }
 
-input:disabled. select:disabled. {
+input:disabled,
+select:disabled {
     color: var(--text-2);
     user-select: none;
 }
