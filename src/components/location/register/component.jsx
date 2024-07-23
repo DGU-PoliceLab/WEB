@@ -1,28 +1,36 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // 서비스
-import { cctvCreate } from "@/services/cctvService";
+import { locationCreate } from "@/services/locationService";
+import { cctvRead } from "@/services/cctvService";
 // 컴포넌트
 // 아이콘
-import { Cctv } from "lucide-react";
+import { DoorClosed } from "lucide-react";
 // 스타일
 import "./style.css";
-import StreamView from "@/components/streamview/component";
 
-const CctvRegister = ({ toggle }) => {
+const LocationRegister = ({ toggle }) => {
     const [name, setName] = useState("");
-    const [url, setUrl] = useState("");
+    const [cctv, setCctv] = useState(-1);
+    const [cctvData, setCctvData] = useState([]);
     const update = (key, value) => {
         if (key == "name") {
             setName(value);
-        } else if (key == "url") {
-            setUrl(value);
+        } else if (key == "cctv") {
+            setCctv(value);
         }
     };
-    const funcCreate = async (name, url) => {
-        if (name != "" && url != "") {
-            const response = await cctvCreate(name, url);
-            console.log(response);
+    const getCctvData = async () => {
+        const response = await cctvRead();
+        if (response != null) {
+            setCctvData(response);
+        } else {
+            setCctvData([]);
+        }
+    };
+    const funcCreate = async (name, cctv) => {
+        if (name != "" && cctv != "") {
+            const response = await locationCreate(name, cctv);
             if (response) {
                 window.alert("성공적으로 등록되었습니다.");
                 toggle(false);
@@ -31,15 +39,18 @@ const CctvRegister = ({ toggle }) => {
             }
         }
     };
+    useEffect(() => {
+        getCctvData();
+    }, []);
     return (
-        <div id="cctvRegister">
+        <div id="locationRegister">
             <div className="headerWrap">
-                <Cctv />
-                <p className="title">CCTV 등록</p>
+                <DoorClosed />
+                <p className="title">유치실 등록</p>
             </div>
             <div className="inputDataWrap">
                 <div className="nameWrap inputGroupWrap">
-                    <p className="title">CCTV명</p>
+                    <p className="title">유치실 명</p>
                     <div className="inputWrap">
                         <input
                             type="text"
@@ -55,30 +66,30 @@ const CctvRegister = ({ toggle }) => {
                     </div>
                 </div>
                 <div className="urlWrap inputGroupWrap">
-                    <p className="title">CCTV URL</p>
+                    <p className="title">CCTV</p>
                     <div className="inputWrap">
-                        <input
-                            type="text"
-                            placeholder="CCTV RTSP URL을 입력해주세요."
+                        <select
                             onChange={(e) => {
-                                update("url", e.target.value);
+                                update("cctv", e.target.value);
                             }}
-                            defaultValue={url}
-                        />
-                        <button className="btn-1 btn-sm btn-round">
-                            유효성검사
-                        </button>
+                        >
+                            <option value={-1} selected>
+                                -
+                            </option>
+                            {cctvData.map((item, idx) => (
+                                <option value={item[0]} key={idx}>
+                                    {item[1]}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div className="testWrap">
-                <StreamView />
             </div>
             <div className="footerWrap">
                 <button
                     className="btn-2 btn-lg btn-round"
                     onClick={() => {
-                        funcCreate(name, url);
+                        funcCreate(name, cctv);
                     }}
                 >
                     등록
@@ -96,4 +107,4 @@ const CctvRegister = ({ toggle }) => {
     );
 };
 
-export default CctvRegister;
+export default LocationRegister;

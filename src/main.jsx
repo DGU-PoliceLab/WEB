@@ -9,6 +9,7 @@ import MultiViewPage from "./pages/multiview/page";
 import DetailViewPage from "./pages/detailview/page";
 import EventManagePage from "./pages/event/manage/page";
 import CctvManagePage from "./pages/cctv/manage/page";
+import LocationManagePage from "./pages/location/manage/page";
 import NotFoundPage from "./pages/notfound/page";
 // 스타일
 import "./index.css";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "/cctv",
                 element: <CctvManagePage />,
+            },
+            {
+                path: "/location",
+                element: <LocationManagePage />,
             },
         ],
     },

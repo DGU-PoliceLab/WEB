@@ -1,26 +1,35 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // 서비스
-import { cctvUpdate } from "@/services/cctvService";
+import { locationUpdate } from "@/services/locationService";
+import { cctvRead } from "@/services/cctvService";
 // 컴포넌트
 // 아이콘
-import { Cctv } from "lucide-react";
+import { DoorClosed } from "lucide-react";
 // 스타일
 import "./style.css";
-import StreamView from "@/components/streamview/component";
 
-const CctvModify = ({ toggle, data }) => {
-    const [cctv, setCctv] = useState(data);
+const LocationModify = ({ toggle, data }) => {
+    const [location, setCctv] = useState(data);
+    const [cctvData, setCctvData] = useState([]);
     const update = (key, value) => {
-        let cctvInfo = { ...cctv };
-        cctvInfo[key] = value;
-        setCctv(cctvInfo);
+        let locationInfo = { ...location };
+        locationInfo[key] = value;
+        setCctv(locationInfo);
+    };
+    const getCctvData = async () => {
+        const response = await cctvRead();
+        if (response != null) {
+            setCctvData(response);
+        } else {
+            setCctvData([]);
+        }
     };
     const funcModify = async () => {
-        const target = cctv.id;
-        const name = cctv.name;
-        const url = cctv.url;
-        const response = await cctvUpdate(target, name, url);
+        const target = location.id;
+        const name = location.name;
+        const cctv = location.cctv;
+        const response = await locationUpdate(target, name, cctv);
         if (response) {
             window.alert("성공적으로 수정되었습니다.");
             toggle(false);
@@ -28,23 +37,26 @@ const CctvModify = ({ toggle, data }) => {
             window.alert("수정에 실패하였습니다.");
         }
     };
+    useEffect(() => {
+        getCctvData();
+    }, []);
     return (
-        <div id="cctvModify">
+        <div id="locationModify">
             <div className="headerWrap">
-                <Cctv />
-                <p className="title">CCTV 수정</p>
+                <DoorClosed />
+                <p className="title">유치실 수정</p>
             </div>
             <div className="inputDataWrap">
                 <div className="nameWrap inputGroupWrap">
-                    <p className="title">CCTV명</p>
+                    <p className="title">유치실 명</p>
                     <div className="inputWrap">
                         <input
                             type="text"
                             placeholder="24자 이하로 작성해주세요."
-                            defaultValue={cctv.name}
                             onChange={(e) => {
                                 update("name", e.target.value);
                             }}
+                            defaultValue={location.name}
                         />
                         <button className="btn-1 btn-sm btn-round">
                             중복 확인
@@ -52,24 +64,26 @@ const CctvModify = ({ toggle, data }) => {
                     </div>
                 </div>
                 <div className="urlWrap inputGroupWrap">
-                    <p className="title">CCTV URL</p>
+                    <p className="title">CCTV</p>
                     <div className="inputWrap">
-                        <input
-                            type="text"
-                            placeholder="CCTV RTSP URL을 입력해주세요."
-                            defaultValue={cctv.url}
+                        <select
                             onChange={(e) => {
-                                update("url", e.target.value);
+                                update("cctv", e.target.value);
                             }}
-                        />
-                        <button className="btn-1 btn-sm btn-round">
-                            유효성검사
-                        </button>
+                        >
+                            <option value={-1}>-</option>
+                            {cctvData.map((item, idx) => (
+                                <option
+                                    value={item[0]}
+                                    key={idx}
+                                    selected={location.cctv == item[1]}
+                                >
+                                    {item[1]}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div className="testWrap">
-                <StreamView />
             </div>
             <div className="footerWrap">
                 <button
@@ -93,4 +107,4 @@ const CctvModify = ({ toggle, data }) => {
     );
 };
 
-export default CctvModify;
+export default LocationModify;

@@ -53,6 +53,14 @@ const MenuList = ({ toggle }) => {
                 >
                     CCTV 관리
                 </p>
+                <p
+                    className="menuItem"
+                    onClick={() => {
+                        navigate("/location");
+                    }}
+                >
+                    유치실 관리
+                </p>
             </div>
         </div>
     );

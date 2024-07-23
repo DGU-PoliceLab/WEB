@@ -76,14 +76,14 @@ const Header = () => {
         setIsNew(false);
         logCheck();
     };
-    useEffect(() => {
-        updateTime();
-        const timer = setInterval(() => {
-            updateTime();
-            getMessage();
-        }, 1000);
-        return () => clearInterval(timer);
-    }, []);
+    // useEffect(() => {
+    //     updateTime();
+    //     const timer = setInterval(() => {
+    //         updateTime();
+    //         getMessage();
+    //     }, 1000);
+    //     return () => clearInterval(timer);
+    // }, []);
     useEffect(() => {
         const path = location.pathname;
         if (path == "/") {

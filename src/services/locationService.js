@@ -4,6 +4,7 @@ const ENDPOINT = "https://localhost:443/location";
 
 const locationCreate = async (name, cctv) => {
     try {
+        console.log(name, cctv);
         const response = await axios.post(ENDPOINT + "/create", {
             name: name,
             cctv: cctv,
@@ -17,9 +18,7 @@ const locationCreate = async (name, cctv) => {
 
 const locationRead = async (target = "") => {
     try {
-        const response = await axios.post(ENDPOINT + "/read", {
-            target: target,
-        });
+        const response = await axios.post(ENDPOINT + "/read");
         return response.data;
     } catch (err) {
         console.error("Error occured in services.locationService.read", err);

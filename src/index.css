@@ -210,7 +210,8 @@ button {
     transition: 0.1s;
 }
 
-input {
+input,
+select {
     padding: 0.5rem 0.75rem;
     background-color: var(--input);
     border: 1px solid var(--input-border);
@@ -218,13 +219,22 @@ input {
     outline: none;
     transition: 0.1s;
 }
+select {
+    flex: 1;
+    background: url("./assets/icons/select.png") no-repeat calc(100% - 0.75rem)
+        50%/16px auto;
+    -webkit-appearance: none; /* 크롬 화살표 없애기 */
+    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+    appearance: none; /* 화살표 없애기 */
+}
 
-input:disabled {
-    color: var(--text-1);
+input:disabled. select:disabled. {
+    color: var(--text-2);
     user-select: none;
 }
 
-input:focus {
+input:focus,
+select:focus {
     background-color: var(--input-active);
     border: 1px solid var(--input-active-border);
 }
