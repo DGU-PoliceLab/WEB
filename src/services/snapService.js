@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = "https://localhost:443/snap";
+const ENDPOINT = "https://localhost:40000/snap";
 
 const snapRead = async (target) => {
     try {

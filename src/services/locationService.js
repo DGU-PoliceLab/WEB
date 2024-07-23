@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = "https://localhost:443/location";
+const ENDPOINT = "https://localhost:40000/location";
 
 const locationCreate = async (name, cctv) => {
     try {

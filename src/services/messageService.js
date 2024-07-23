@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = "https://localhost:443/message";
+const ENDPOINT = "https://localhost:40000/message";
 
 const messageLive = async () => {
     try {

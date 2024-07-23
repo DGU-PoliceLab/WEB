@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = "https://localhost:443/log";
+const ENDPOINT = "https://localhost:40000/log";
 
 const logRead = async (datetime = [], location = [], types = []) => {
     try {

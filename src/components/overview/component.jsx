@@ -57,7 +57,7 @@ const View = ({ data }) => {
             <div className="thumbWrap">
                 <img
                     className="thumbnail"
-                    src={"https://localhost:443/file/snap/" + object.thumb}
+                    src={"https://localhost:40000/file/snap/" + object.thumb}
                     alt={object.thumb}
                     key={object.thumb}
                 />

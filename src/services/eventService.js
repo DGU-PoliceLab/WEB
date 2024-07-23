@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = "https://localhost:443/event";
+const ENDPOINT = "https://localhost:40000/event";
 
 const eventCreate = async (e_type, name) => {
     try {

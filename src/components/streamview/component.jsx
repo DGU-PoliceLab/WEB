@@ -10,7 +10,7 @@ const StreamView = ({ url }) => {
     const [strUrl, setStrUrl] = useState(url);
     const [rtspUrl, setRtspUrl] = useState(null);
     const conv = (strUrl) => {
-        let stream = "https://localhost:443/rtsp?url=";
+        let stream = "https://localhost:40000/rtsp?url=";
         stream += btoa(strUrl);
         console.log("url >>", strUrl);
         console.log("convUrl >>", stream);
