@@ -1,82 +1,89 @@
 // 라이브러리
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // 서비스
+import { snapRead } from "@/services/snapService";
 // 컴포넌트
-import StreamView from "../streamview/component";
 // 아이콘
+import { SquareDashedMousePointer } from "lucide-react";
 import { Breath, Emotion, Heart, Temp } from "@/assets/icons/icons";
 // 스타일
 import "./style.css";
 
-const testData = [
-    {
-        id: 0,
-        heart: 100,
-        breath: 20,
-        temp: 32.5,
-        emotion: 0,
-    },
-    {
-        id: 0,
-        heart: 100,
-        breath: 20,
-        temp: 32.5,
-        emotion: 0,
-    },
-    {
-        id: 0,
-        heart: 100,
-        breath: 20,
-        temp: 32.5,
-        emotion: 0,
-    },
-];
-
-const OverView = () => {
-    const [viewData, setViewData] = useState(testData);
+const OverView = ({ target }) => {
+    const [objectData, setObjectData] = useState([]);
+    const getObjectData = async () => {
+        const response = await snapRead(target);
+        console.log("response >>", response);
+        if (response) {
+            setObjectData(response);
+        } else {
+            setObjectData([]);
+        }
+    };
+    useEffect(() => {
+        getObjectData();
+        const timer = setInterval(() => {
+            getObjectData();
+        }, 5000);
+        return () => clearInterval(timer);
+    }, [target]);
     return (
         <div id="overview">
             <div className="headerWrap">
                 <p className="title">객체 오버뷰</p>
             </div>
-            <div className="viewWrap">
-                {viewData.map((item, idx) => (
-                    <View data={item} />
-                ))}
+            <div className="viewWrap" key={objectData}>
+                {objectData.length != 0 ? (
+                    <>
+                        {objectData.map((item, idx) => (
+                            <View data={item} key={idx} />
+                        ))}
+                    </>
+                ) : (
+                    <div className="noData">
+                        <SquareDashedMousePointer />
+                        <p>감지된 객체가 없습니다.</p>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 const View = ({ data }) => {
-    const [ojbect, setObject] = useState(data);
+    const [object, setObject] = useState(data);
     return (
         <div className="view">
             <div className="thumbWrap">
-                <img className="thumbnail" src="" alt="" />
+                <img
+                    className="thumbnail"
+                    src={"https://localhost:443/file/snap/" + object.thumb}
+                    alt={object.thumb}
+                    key={object.thumb}
+                />
             </div>
             <div className="contentWrap">
                 <div className="nameWrap dataWrap">
-                    <span className="value">{ojbect.id}</span>
+                    <span className="value">{object.id}</span>
                 </div>
                 <div className="heartWrap dataWrap">
                     <Heart />
-                    <span className="value">{ojbect.heart}</span>
+                    <span className="value">{object.heart}</span>
                     <span>BPM</span>
                 </div>
                 <div className="breathWrap dataWrap">
                     <Breath />
-                    <span className="value">{ojbect.breath}</span>
+                    <span className="value">{object.breath}</span>
                     <span>회/분</span>
                 </div>
                 <div className="tempWrap dataWrap">
                     <Temp />
-                    <span className="value">{ojbect.temp}</span>
+                    <span className="value">{object.temp}</span>
                     <span>도</span>
                 </div>
                 <div className="emotionWrap dataWrap">
                     <Emotion />
-                    <span className="value">{ojbect.emotion}</span>
+                    <span className="value">{object.emotion}</span>
                     <span>단계</span>
                 </div>
             </div>

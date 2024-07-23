@@ -62,7 +62,7 @@ const EntireEventList = () => {
 
 const EventItem = ({ data }) => {
     const [logInfo, setLogInfo] = useState(data);
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(true);
     const parseData = (info) => {
         let parsed = {};
         parsed["id"] = info[0];
@@ -72,7 +72,7 @@ const EventItem = ({ data }) => {
         let occured = get_datetime(datetime);
         parsed["occured"] = occured.str;
         parsed["checked"] = info[4];
-        setIsChecked(info[4]);
+        setIsChecked(info[4] ? true : false);
         setLogInfo(parsed);
     };
     useEffect(() => {

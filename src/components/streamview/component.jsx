@@ -6,19 +6,22 @@ import { useEffect, useState } from "react";
 // 스타일
 import "./style.css";
 
-const StreamView = ({ name = null, url = null }) => {
-    const [rtspUrl, setRtspUrl] = useState("");
+const StreamView = ({ url }) => {
+    const [strUrl, setStrUrl] = useState(url);
+    const [rtspUrl, setRtspUrl] = useState(null);
     const conv = (strUrl) => {
-        let stream = "http://localhost:40000/rtsp?url=";
-        stream += btoa(url);
+        let stream = "https://localhost:443/rtsp?url=";
+        stream += btoa(strUrl);
+        console.log("url >>", strUrl);
+        console.log("convUrl >>", stream);
         setRtspUrl(stream);
     };
     useEffect(() => {
-        conv(url);
+        conv(strUrl);
     }, []);
     return (
         <div className="streamView">
-            {url == null ? (
+            {rtspUrl == null ? (
                 <p>No Signal</p>
             ) : (
                 <>

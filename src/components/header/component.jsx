@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // 서비스
+import { locationCctvRead } from "@/services/locationService";
 import { messageLive } from "@/services/messageService";
 import { logCheck } from "@/services/logService";
 // 컴포넌트
 import MenuList from "@/components/menulist/component";
 // 유틸
 import { get_datetime } from "@/utils/time";
+import { tts } from "@/utils/voice";
 // 아이콘
 import Logo from "@/assets/logo.png";
 import { Menu, ChevronRight, Siren } from "lucide-react";
@@ -22,6 +24,31 @@ const Header = () => {
     const [isMenu, setIsMenu] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [message, setMessage] = useState("");
+    const setDetailPageTitle = async (path) => {
+        const response = await locationCctvRead();
+        if (response != null) {
+            const id = parseInt(path.split("/")[2]);
+            let flag = false;
+            response.forEach((item) => {
+                if (item[0] == id) {
+                    setTitle(["유치실 멀티뷰", item[1]]);
+                    flag = true;
+                    return true;
+                }
+            });
+            if (!flag) {
+                window.alert(
+                    "유효하지 않은 주소입니다.\n유치실 멀티뷰 화면으로 돌아갑니다."
+                );
+                navigate("/");
+            }
+        } else {
+            window.alert(
+                "유효하지 않은 주소입니다.\n유치실 멀티뷰 화면으로 돌아갑니다."
+            );
+            navigate("/");
+        }
+    };
     const updateTime = () => {
         const now = get_datetime();
         setTime(now.str);
@@ -55,21 +82,28 @@ const Header = () => {
             updateTime();
             getMessage();
         }, 1000);
-
         return () => clearInterval(timer);
     }, []);
     useEffect(() => {
         const path = location.pathname;
         if (path == "/") {
             setTitle(["유치실 멀티뷰"]);
-        } else if (path == "/detail") {
-            setTitle(["유치실 멀티뷰", "유치실1"]);
+        } else if (path.startsWith("/detail")) {
+            setDetailPageTitle(path);
         } else if (path == "/event") {
             setTitle(["이벤트 리스트"]);
         } else if (path == "/cctv") {
             setTitle(["CCTV 관리"]);
         }
     }, [location]);
+    useEffect(() => {
+        if (isNew) {
+            const item = message[0];
+            let text = `${item.location}에서 ${item.event}발생!`;
+            text = `${text} ${text} ${text}`;
+            tts(text);
+        }
+    }, [isNew]);
     return (
         <div id="header">
             <div

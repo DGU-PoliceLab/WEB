@@ -63,7 +63,7 @@ const View = ({ id = 0, name = "유치실", url = "rtsp://", event = false }) =>
                 <div
                     className="detailWrap"
                     onClick={() => {
-                        navigate("/detail");
+                        navigate(`/detail/${id}`);
                     }}
                 >
                     <LucideArrowUpRightFromSquare />

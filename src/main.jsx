@@ -9,7 +9,7 @@ import MultiViewPage from "./pages/multiview/page";
 import DetailViewPage from "./pages/detailview/page";
 import EventManagePage from "./pages/event/manage/page";
 import CctvManagePage from "./pages/cctv/manage/page";
-import Test from "./pages/test/page";
+import NotFoundPage from "./pages/notfound/page";
 // 스타일
 import "./index.css";
 
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
                 element: <MultiViewPage />,
             },
             {
-                path: "/detail",
+                path: "/detail/:id",
                 element: <DetailViewPage />,
             },
             {
@@ -36,8 +36,8 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: "/test",
-        element: <Test />,
+        path: "*",
+        element: <NotFoundPage />,
     },
 ]);
 

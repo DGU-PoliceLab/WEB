@@ -6,11 +6,17 @@
 }
 
 #detailViewPage > .viewContainer {
+    flex: 1;
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid var(--border);
-    min-height: 420px;
-    height: 420px;
+    max-height: 420px;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+#detailViewPage > .viewContainer.min {
+    flex: 0;
 }
 
 #detailViewPage > .viewContainer > .realtimeViewContainer {
@@ -20,8 +26,11 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    min-width: 480px;
-    max-width: 868px;
+    width: fit-content;
+    width: 100%;
+    min-width: 420px;
+    max-width: 746px;
+    aspect-ratio: 16 / 9;
     border-right: 1px solid var(--border);
 }
 
@@ -47,5 +56,6 @@
 #detailViewPage > .eventContainer {
     flex: 1;
     padding: 1rem;
+    min-height: calc(100svh - 572px);
     overflow: hidden;
 }

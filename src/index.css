@@ -314,3 +314,22 @@ input:focus {
 *::-webkit-scrollbar-thumb:hover {
     background-color: var(--scroll-bar-thumb-hover);
 }
+
+tr,
+th,
+td {
+    height: 3.5rem;
+    max-height: 3.5rem;
+}
+
+tr.noData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+tr.noData > td {
+    width: 100%;
+}

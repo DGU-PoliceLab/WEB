@@ -1,5 +1,5 @@
 {
-    "name": "itrc-front",
+    "name": "policelab",
     "private": true,
     "version": "1.0.0",
     "type": "module",
@@ -30,7 +30,7 @@
         "clsx": "^2.1.0",
         "date-fns": "^3.6.0",
         "jsmpeg": "^1.0.0",
-        "lucide-react": "^0.334.0",
+        "lucide-react": "^0.414.0",
         "node-rtsp-stream": "^0.0.9",
         "react": "^18.2.0",
         "react-aria": "^3.32.1",
@@ -46,6 +46,7 @@
         "streamedian": "github:Streamedian/html5_rtsp_player",
         "tailwind-merge": "^2.2.1",
         "tailwindcss-animate": "^1.0.7",
+        "vite-plugin-mkcert": "^1.17.5",
         "zustand": "^4.5.4"
     },
     "devDependencies": {

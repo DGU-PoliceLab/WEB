@@ -1,12 +1,13 @@
 import axios from "axios";
 
-const ENDPOINT = "http://localhost:40000/log";
+const ENDPOINT = "https://localhost:443/log";
 
 const logRead = async (datetime = [], location = [], types = []) => {
     try {
+        console.log(datetime, location, types);
         const response = await axios.post(ENDPOINT + "/read", {
             datetime: datetime,
-            location: location,
+            locations: location,
             types: types,
         });
         return response.data;
