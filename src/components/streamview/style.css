@@ -10,6 +10,7 @@
     background-color: var(--stream-view);
     border-radius: var(--stream-view-radius);
     overflow: hidden;
+    user-select: none;
 }
 
 .streamView > p {
@@ -32,6 +33,7 @@
 
 .streamView > img {
     z-index: 1;
+    user-select: none;
 }
 
 @keyframes Spin {

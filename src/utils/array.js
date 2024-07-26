@@ -14,14 +14,12 @@ const indicatorArray = (c, l) => {
     } else {
         result = num_to_array(c, 1);
     }
-    console.log(result);
     if (l - 3 > c) {
         result = [...result, c + 1, c + 2, c + 3];
     } else {
         let temp = num_to_array(l - c - 2, c + 1);
         result = [...result, ...temp];
     }
-    console.log(result);
     return result;
 };
 

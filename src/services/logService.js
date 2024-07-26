@@ -5,6 +5,9 @@ const ENDPOINT = "https://localhost:40000/log";
 const logRead = async (datetime = [], location = [], types = []) => {
     try {
         console.log(datetime, location, types);
+        if (datetime[0] == null || datetime[1] == null) {
+            datetime = [];
+        }
         const response = await axios.post(ENDPOINT + "/read", {
             datetime: datetime,
             locations: location,

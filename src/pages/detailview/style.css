@@ -10,9 +10,9 @@
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid var(--border);
-    max-height: 420px;
+    max-height: 460px;
     overflow: hidden;
-    transition: 0.2s;
+    transition: 0.5s;
 }
 
 #detailViewPage > .viewContainer.min {
@@ -30,6 +30,8 @@
     width: 100%;
     min-width: 420px;
     max-width: 746px;
+    min-height: 100%;
+    height: 100%;
     aspect-ratio: 16 / 9;
     border-right: 1px solid var(--border);
 }

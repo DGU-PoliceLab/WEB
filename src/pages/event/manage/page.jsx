@@ -5,7 +5,6 @@ import { logRead } from "@/services/logService";
 // 컴포넌트
 import EventFilter from "@/components/event/filter/component";
 import EventList from "@/components/event/list/component";
-// import Dimmed from "@/components/dimmed/component";
 // 아이콘
 // 스타일
 import "./style.css";
@@ -18,7 +17,11 @@ const EventManagePage = () => {
     const [location, setLocation] = useState([]);
     const [type, setType] = useState([]);
     const getLogData = async () => {
-        const response = await logRead();
+        const response = await logRead(
+            [startDatetime, endDatetime],
+            location,
+            type
+        );
         if (response != null) {
             setLog(response);
         } else {

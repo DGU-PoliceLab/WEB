@@ -12,8 +12,6 @@ const StreamView = ({ url }) => {
     const conv = (strUrl) => {
         let stream = "https://localhost:40000/rtsp?url=";
         stream += btoa(strUrl);
-        console.log("url >>", strUrl);
-        console.log("convUrl >>", stream);
         setRtspUrl(stream);
     };
     useEffect(() => {

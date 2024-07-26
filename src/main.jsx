@@ -10,6 +10,7 @@ import DetailViewPage from "./pages/detailview/page";
 import EventManagePage from "./pages/event/manage/page";
 import CctvManagePage from "./pages/cctv/manage/page";
 import LocationManagePage from "./pages/location/manage/page";
+import ErrorPage from "./pages/error/page";
 import NotFoundPage from "./pages/notfound/page";
 // 스타일
 import "./index.css";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
                 element: <LocationManagePage />,
             },
         ],
+    },
+    {
+        path: "/error/server",
+        element: <ErrorPage />,
     },
     {
         path: "*",

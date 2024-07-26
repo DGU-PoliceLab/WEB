@@ -4,7 +4,6 @@ const ENDPOINT = "https://localhost:40000/location";
 
 const locationCreate = async (name, cctv) => {
     try {
-        console.log(name, cctv);
         const response = await axios.post(ENDPOINT + "/create", {
             name: name,
             cctv: cctv,

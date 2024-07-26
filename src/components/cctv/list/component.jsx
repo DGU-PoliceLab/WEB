@@ -26,7 +26,6 @@ const CctvList = () => {
     useEffect(() => {
         if (target == false) {
             setMethod("");
-            console.log("load new data");
             getCctvData();
         }
     }, [target]);

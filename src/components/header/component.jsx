@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // 서비스
+import { checkServer } from "@/services/serverService";
 import { locationCctvRead } from "@/services/locationService";
 import { messageLive } from "@/services/messageService";
 import { logCheck } from "@/services/logService";
@@ -24,6 +25,12 @@ const Header = () => {
     const [isMenu, setIsMenu] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [message, setMessage] = useState("");
+    const check = async () => {
+        const response = await checkServer();
+        if (!response) {
+            navigate("/error/server");
+        }
+    };
     const setDetailPageTitle = async (path) => {
         const response = await locationCctvRead();
         if (response != null) {
@@ -57,10 +64,11 @@ const Header = () => {
         str = "[" + str + "]";
         const jsonString = str.replace(/'/g, '"');
         const obj = JSON.parse(jsonString);
-        return obj;
+        return obj[0];
     };
     const getMessage = async () => {
         const response = await messageLive();
+        console.log(response);
         if (response != null) {
             const responseObj = parseMessage(response);
             if (responseObj != message && response != "") {
@@ -68,7 +76,6 @@ const Header = () => {
                 setMessage(responseObj);
             }
         } else {
-            setMessage("");
             setIsNew(false);
         }
     };
@@ -76,14 +83,15 @@ const Header = () => {
         setIsNew(false);
         logCheck();
     };
-    // useEffect(() => {
-    //     updateTime();
-    //     const timer = setInterval(() => {
-    //         updateTime();
-    //         getMessage();
-    //     }, 1000);
-    //     return () => clearInterval(timer);
-    // }, []);
+    useEffect(() => {
+        check();
+        updateTime();
+        const timer = setInterval(() => {
+            updateTime();
+            getMessage();
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
     useEffect(() => {
         const path = location.pathname;
         if (path == "/") {
@@ -98,7 +106,7 @@ const Header = () => {
     }, [location]);
     useEffect(() => {
         if (isNew) {
-            const item = message[0];
+            const item = message;
             let text = `${item.location}에서 ${item.event}발생!`;
             text = `${text} ${text} ${text}`;
             tts(text);
@@ -133,11 +141,9 @@ const Header = () => {
                     }}
                 >
                     <Siren />
-                    {message.map((item, idx) => (
-                        <p>
-                            {item.location}에서 {item.event}발생
-                        </p>
-                    ))}
+                    <p>
+                        {message.location}에서 {message.event}발생
+                    </p>
                 </div>
             )}
 

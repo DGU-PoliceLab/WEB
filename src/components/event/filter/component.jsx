@@ -154,7 +154,6 @@ const EventFilter = ({
     };
     const getLocationData = async () => {
         const response = await locationRead();
-        console.log(response);
         if (response != null) {
             setLocations(response);
         } else {
@@ -163,7 +162,7 @@ const EventFilter = ({
     };
     const getEventData = async () => {
         const response = await eventRead();
-        console.log(response);
+
         if (response != null) {
             setTypes(response);
         } else {

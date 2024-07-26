@@ -1,0 +1,26 @@
+#errorPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100svw;
+    height: 100svh;
+}
+
+#errorPage > svg {
+    width: 4rem;
+    height: 4rem;
+    stroke-width: 1;
+}
+
+#errorPage > p {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+#errorPage > ul {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-2);
+    list-style: disc;
+}

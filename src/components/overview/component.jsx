@@ -13,7 +13,6 @@ const OverView = ({ target }) => {
     const [objectData, setObjectData] = useState([]);
     const getObjectData = async () => {
         const response = await snapRead(target);
-        console.log("response >>", response);
         if (response) {
             setObjectData(response);
         } else {
@@ -24,7 +23,7 @@ const OverView = ({ target }) => {
         getObjectData();
         const timer = setInterval(() => {
             getObjectData();
-        }, 5000);
+        }, 1000);
         return () => clearInterval(timer);
     }, [target]);
     return (
@@ -36,7 +35,7 @@ const OverView = ({ target }) => {
                 {objectData.length != 0 ? (
                     <>
                         {objectData.map((item, idx) => (
-                            <View data={item} key={idx} />
+                            <View data={item} key={item} />
                         ))}
                     </>
                 ) : (
@@ -51,40 +50,47 @@ const OverView = ({ target }) => {
 };
 
 const View = ({ data }) => {
-    const [object, setObject] = useState(data);
     return (
         <div className="view">
             <div className="thumbWrap">
                 <img
                     className="thumbnail"
-                    src={"https://localhost:40000/file/snap/" + object.thumb}
-                    alt={object.thumb}
-                    key={object.thumb}
+                    src={"https://localhost:40000/file/snap/" + data.thumb}
+                    alt={data.thumb}
+                    key={data.thumb}
                 />
             </div>
             <div className="contentWrap">
                 <div className="nameWrap dataWrap">
-                    <span className="value">{object.id}</span>
+                    <span className="value">{data.id}</span>
+                </div>
+                <div className="emotionWrap dataWrap">
+                    <Emotion />
+                    <span className="value">
+                        {data.emotion == 0
+                            ? "긍정 또는 무표정"
+                            : data.emotion == 1
+                            ? "부정 1단계"
+                            : "부정 2단계"}
+                    </span>
+                </div>
+                <div className="barWrap">
+                    <div className={`bar step${data.emotion}`}></div>
                 </div>
                 <div className="heartWrap dataWrap">
                     <Heart />
-                    <span className="value">{object.heart}</span>
+                    <span className="value">{data.heart}</span>
                     <span>BPM</span>
                 </div>
                 <div className="breathWrap dataWrap">
                     <Breath />
-                    <span className="value">{object.breath}</span>
+                    <span className="value">{data.breath}</span>
                     <span>회/분</span>
                 </div>
                 <div className="tempWrap dataWrap">
                     <Temp />
-                    <span className="value">{object.temp}</span>
+                    <span className="value">{data.temp}</span>
                     <span>도</span>
-                </div>
-                <div className="emotionWrap dataWrap">
-                    <Emotion />
-                    <span className="value">{object.emotion}</span>
-                    <span>단계</span>
                 </div>
             </div>
         </div>

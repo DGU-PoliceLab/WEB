@@ -22,7 +22,6 @@ const CctvRegister = ({ toggle }) => {
     const funcCreate = async (name, url) => {
         if (name != "" && url != "") {
             const response = await cctvCreate(name, url);
-            console.log(response);
             if (response) {
                 window.alert("성공적으로 등록되었습니다.");
                 toggle(false);
