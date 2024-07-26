@@ -28,18 +28,19 @@ const Header = () => {
     const [isMenu, setIsMenu] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [message, setMessage] = useState("");
+    // 서버 상태 확인
     const check = async () => {
         const response = await checkServer();
         if (!response) {
             navigate("/error/server");
         }
     };
-    const handleMessage = () => {
-        showNotification("Hello!", {
-            body: "This is a notification body",
-            // icon: "path/to/icon.png",
-        });
+    // 시간 업데이트
+    const updateTime = () => {
+        const now = get_datetime();
+        setTime(now.str);
     };
+    // 상단 페이지 타이틀 설정
     const setDetailPageTitle = async (path) => {
         const response = await locationCctvRead();
         if (response != null) {
@@ -65,25 +66,19 @@ const Header = () => {
             navigate("/");
         }
     };
-    const updateTime = () => {
-        const now = get_datetime();
-        setTime(now.str);
-    };
+    // 메시지 문자열을 딕셔너리로 변환
     const parseMessage = (str) => {
         str = "[" + str + "]";
         const jsonString = str.replace(/'/g, '"');
         const obj = JSON.parse(jsonString);
         return obj[0];
     };
+    // 실시간 메시지 받아오기
     const getMessage = async () => {
         const response = await messageLive();
         if (response != null) {
-            const responseObj = parseMessage(response);
-            if (responseObj != message && response != "") {
-                const notificationBody = `${responseObj.location}에서 ${responseObj.event}발생`;
-                showNotification("Policelab 2.0", {
-                    body: notificationBody,
-                });
+            if (response != "") {
+                const responseObj = parseMessage(response);
                 setIsNew(true);
                 setMessage(responseObj);
             }
@@ -91,19 +86,33 @@ const Header = () => {
             setIsNew(false);
         }
     };
+    // 알람 확인
     const checkAlarm = () => {
         setIsNew(false);
+        setMessage("");
         logCheck();
     };
+    // 매초마다 실행되는 함수
     useEffect(() => {
         check();
-        updateTime();
         const timer = setInterval(() => {
             updateTime();
             getMessage();
         }, 1000);
         return () => clearInterval(timer);
     }, []);
+    useEffect(() => {
+        if (message != "") {
+            console.log("message >>>", message);
+            const notificationBody = `${message.location}에서 ${message.event}발생`;
+            showNotification("Policelab 2.0", {
+                body: notificationBody,
+                icon: "/logoBlack.png",
+                badge: "/logoBlack.png",
+            });
+        }
+    }, [message]);
+    // 상단 페이지 타이틀 설정
     useEffect(() => {
         const path = location.pathname;
         if (path == "/") {
@@ -153,8 +162,7 @@ const Header = () => {
             <div
                 className="menuWrap"
                 onClick={() => {
-                    handleMessage();
-                    // setIsMenu(true);
+                    setIsMenu(true);
                 }}
             >
                 <Menu className="menu icon_32" />
