@@ -7,7 +7,7 @@ import { locationCctvRead } from "@/services/locationService";
 import { messageLive } from "@/services/messageService";
 import { logCheck } from "@/services/logService";
 // 훅
-// import { useNotification } from "@/hooks/useNotification";
+import useNotification from "@/hooks/useNotification";
 // 컴포넌트
 import MenuList from "@/components/menulist/component";
 // 유틸
@@ -19,33 +19,10 @@ import { Menu, ChevronRight, Siren } from "lucide-react";
 // 스타일
 import "./style.css";
 
-const useNotification = (title, options) => {
-    if (!("Notification" in window)) {
-        return;
-    }
-
-    const fireNotif = () => {
-        /* 권한 요청 부분 */
-        if (Notification.permission !== "granted") {
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted") {
-                    /* 권한을 요청받고 nofi를 생성해주는 부분 */
-                    new Notification(title, options);
-                } else {
-                    return;
-                }
-            });
-        } else {
-            /* 권한이 있을때 바로 noti 생성해주는 부분 */
-            new Notification(title, options);
-        }
-    };
-    return fireNotif;
-};
-
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { showNotification } = useNotification();
     const [title, setTitle] = useState([]);
     const [time, setTime] = useState("");
     const [isMenu, setIsMenu] = useState(false);
@@ -56,6 +33,12 @@ const Header = () => {
         if (!response) {
             navigate("/error/server");
         }
+    };
+    const handleMessage = () => {
+        showNotification("Hello!", {
+            body: "This is a notification body",
+            // icon: "path/to/icon.png",
+        });
     };
     const setDetailPageTitle = async (path) => {
         const response = await locationCctvRead();
@@ -97,6 +80,10 @@ const Header = () => {
         if (response != null) {
             const responseObj = parseMessage(response);
             if (responseObj != message && response != "") {
+                const notificationBody = `${responseObj.location}에서 ${responseObj.event}발생`;
+                showNotification("Policelab 2.0", {
+                    body: notificationBody,
+                });
                 setIsNew(true);
                 setMessage(responseObj);
             }
@@ -129,17 +116,6 @@ const Header = () => {
             setTitle(["CCTV 관리"]);
         }
     }, [location]);
-    useEffect(() => {
-        if (isNew) {
-            const item = message;
-            let text = `${item.location}에서 ${item.event}발생!`;
-            useNotification("Policelab 2.0", {
-                body: text,
-            });
-            // text = `${text} ${text} ${text}`;
-            // tts(text);
-        }
-    }, [isNew]);
     return (
         <div id="header">
             <div
@@ -174,11 +150,11 @@ const Header = () => {
                     </p>
                 </div>
             )}
-            <button onClick={triggerNotif}>test</button>
             <div
                 className="menuWrap"
                 onClick={() => {
-                    setIsMenu(true);
+                    handleMessage();
+                    // setIsMenu(true);
                 }}
             >
                 <Menu className="menu icon_32" />

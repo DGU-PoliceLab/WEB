@@ -1,25 +1,32 @@
-const useNotification = (title, options) => {
-    if (!("Notification" in window)) {
-        return;
-    }
+import { useState, useEffect } from "react";
 
-    const fireNotif = () => {
-        /* 권한 요청 부분 */
-        if (Notification.permission !== "granted") {
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted") {
-                    /* 권한을 요청받고 nofi를 생성해주는 부분 */
+function useNotification() {
+    const [permission, setPermission] = useState(Notification.permission);
+
+    useEffect(() => {
+        if (permission === "default") {
+            Notification.requestPermission().then((perm) => {
+                setPermission(perm);
+            });
+        }
+    }, [permission]);
+
+    const showNotification = (title, options) => {
+        if (permission === "granted") {
+            new Notification(title, options);
+        } else if (permission === "default") {
+            Notification.requestPermission().then((perm) => {
+                if (perm === "granted") {
                     new Notification(title, options);
-                } else {
-                    return;
                 }
+                setPermission(perm);
             });
         } else {
-            /* 권한이 있을때 바로 noti 생성해주는 부분 */
-            new Notification(title, options);
+            console.log("Notification permission denied");
         }
     };
-    return fireNotif;
-};
 
-export { useNotification };
+    return { permission, showNotification };
+}
+
+export default useNotification;

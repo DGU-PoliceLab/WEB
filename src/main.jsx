@@ -15,6 +15,23 @@ import NotFoundPage from "./pages/notfound/page";
 // 스타일
 import "./index.css";
 
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+            .register("/serviceWorker.js")
+            .then((registration) => {
+                console.log(
+                    "Service Worker registered with scope:",
+                    registration.scope
+                );
+            })
+            .catch((error) => {
+                console.log("Service Worker registration failed:", error);
+            });
+        console.log("!!!");
+    });
+}
+
 const router = createBrowserRouter([
     {
         element: <RootLayout />,
