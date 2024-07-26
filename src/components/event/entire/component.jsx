@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // 서비스
-import { logCheck, logRead } from "@/services/logService";
+import { logCheck, logReadLimit } from "@/services/logService";
 // 컴포넌트
 // 유틸
 import { get_datetime } from "@/utils/time";
@@ -14,7 +14,7 @@ const EntireEventList = () => {
     const navigate = useNavigate();
     const [log, setLog] = useState([]);
     const getLogData = async () => {
-        const response = await logRead();
+        const response = await logReadLimit();
         if (response != null) {
             setLog(response);
         } else {
