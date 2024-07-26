@@ -6,16 +6,42 @@ import { checkServer } from "@/services/serverService";
 import { locationCctvRead } from "@/services/locationService";
 import { messageLive } from "@/services/messageService";
 import { logCheck } from "@/services/logService";
+// 훅
+// import { useNotification } from "@/hooks/useNotification";
 // 컴포넌트
 import MenuList from "@/components/menulist/component";
 // 유틸
 import { get_datetime } from "@/utils/time";
-import { tts } from "@/utils/voice";
+// import { tts } from "@/utils/voice";
 // 아이콘
 import Logo from "@/assets/logo.png";
 import { Menu, ChevronRight, Siren } from "lucide-react";
 // 스타일
 import "./style.css";
+
+const useNotification = (title, options) => {
+    if (!("Notification" in window)) {
+        return;
+    }
+
+    const fireNotif = () => {
+        /* 권한 요청 부분 */
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    /* 권한을 요청받고 nofi를 생성해주는 부분 */
+                    new Notification(title, options);
+                } else {
+                    return;
+                }
+            });
+        } else {
+            /* 권한이 있을때 바로 noti 생성해주는 부분 */
+            new Notification(title, options);
+        }
+    };
+    return fireNotif;
+};
 
 const Header = () => {
     const location = useLocation();
@@ -107,8 +133,11 @@ const Header = () => {
         if (isNew) {
             const item = message;
             let text = `${item.location}에서 ${item.event}발생!`;
-            text = `${text} ${text} ${text}`;
-            tts(text);
+            useNotification("Policelab 2.0", {
+                body: text,
+            });
+            // text = `${text} ${text} ${text}`;
+            // tts(text);
         }
     }, [isNew]);
     return (
@@ -145,7 +174,7 @@ const Header = () => {
                     </p>
                 </div>
             )}
-
+            <button onClick={triggerNotif}>test</button>
             <div
                 className="menuWrap"
                 onClick={() => {
