@@ -7,15 +7,16 @@ import { useEffect, useState } from "react";
 import "./style.css";
 
 const StreamView = ({ url }) => {
-    const [strUrl, setStrUrl] = useState(url);
     const [rtspUrl, setRtspUrl] = useState(null);
     const conv = (strUrl) => {
-        let stream = "https://localhost:40000/rtsp?url=";
-        stream += btoa(strUrl);
-        setRtspUrl(stream);
+        if (strUrl != "") {
+            let stream = "https://localhost:40000/rtsp?url=";
+            stream += btoa(strUrl);
+            setRtspUrl(stream);
+        }
     };
     useEffect(() => {
-        conv(strUrl);
+        conv(url);
     }, []);
     return (
         <div className="streamView">

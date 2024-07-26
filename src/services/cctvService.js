@@ -25,6 +25,16 @@ const cctvRead = async () => {
     }
 };
 
+const cctvNameCheck = async (name) => {
+    try {
+        const response = await axios.post(ENDPOINT + "/check", { name: name });
+        return response.data;
+    } catch (err) {
+        console.error("Error occured in services.cctvService.check", err);
+        return { err: err };
+    }
+};
+
 const cctvUpdate = async (target, name, url) => {
     try {
         const response = await axios.post(ENDPOINT + "/update", {
@@ -51,4 +61,4 @@ const cctvDelete = async (target) => {
     }
 };
 
-export { cctvCreate, cctvRead, cctvUpdate, cctvDelete };
+export { cctvCreate, cctvRead, cctvNameCheck, cctvUpdate, cctvDelete };

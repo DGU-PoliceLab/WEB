@@ -1,17 +1,55 @@
 // 라이브러리
 import { useState } from "react";
 // 서비스
-import { cctvCreate } from "@/services/cctvService";
+import { cctvCreate, cctvNameCheck } from "@/services/cctvService";
 // 컴포넌트
 // 아이콘
-import { Cctv } from "lucide-react";
+import { Cctv, AlertTriangle } from "lucide-react";
 // 스타일
 import "./style.css";
 import StreamView from "@/components/streamview/component";
 
 const CctvRegister = ({ toggle }) => {
     const [name, setName] = useState("");
+    const [nameCheck, setNameCheck] = useState(false);
     const [url, setUrl] = useState("");
+    const [urlCheck, setUrlCheck] = useState(false);
+    const [message, setMessage] = useState("");
+    const checkName = async () => {
+        if (name != "") {
+            const response = await cctvNameCheck(name);
+            setNameCheck(response);
+            if (response) {
+                setMessage("");
+            } else {
+                setMessage("이미 사용중인 CCTV명입니다.");
+            }
+        } else {
+            setNameCheck(false);
+            setMessage("CCTV명은 공백으로 설정할 수 없습니다.");
+        }
+    };
+    const checkUrl = async () => {
+        console.log(url);
+        if (url != "") {
+            console.log("check pass");
+            setUrlCheck(true);
+            setUrl(url);
+        } else {
+            console.log("check fail");
+            setUrlCheck(false);
+            setMessage("CCTV URL은 공백으로 설정할 수 없습니다.");
+        }
+    };
+    const isCheckProcessDone = () => {
+        if (!nameCheck) {
+            setMessage("CCTV명 중복 확인이 필요합니다.");
+        } else if (!urlCheck) {
+            setMessage("CCTV URL 유효성 검사가 필요합니다.");
+        } else {
+            funcCreate(name, url);
+        }
+    };
     const update = (key, value) => {
         if (key == "name") {
             setName(value);
@@ -36,6 +74,12 @@ const CctvRegister = ({ toggle }) => {
                 <Cctv />
                 <p className="title">CCTV 등록</p>
             </div>
+            {message != "" && (
+                <div className="msg msgDanger">
+                    <AlertTriangle />
+                    <p>{message}</p>
+                </div>
+            )}
             <div className="inputDataWrap">
                 <div className="nameWrap inputGroupWrap">
                     <p className="title">CCTV명</p>
@@ -48,7 +92,12 @@ const CctvRegister = ({ toggle }) => {
                             }}
                             defaultValue={name}
                         />
-                        <button className="btn-1 btn-sm btn-round">
+                        <button
+                            className="btn-1 btn-sm btn-round"
+                            onClick={() => {
+                                checkName();
+                            }}
+                        >
                             중복 확인
                         </button>
                     </div>
@@ -64,20 +113,25 @@ const CctvRegister = ({ toggle }) => {
                             }}
                             defaultValue={url}
                         />
-                        <button className="btn-1 btn-sm btn-round">
-                            유효성검사
+                        <button
+                            className="btn-1 btn-sm btn-round"
+                            onClick={() => {
+                                checkUrl();
+                            }}
+                        >
+                            유효성 검사
                         </button>
                     </div>
                 </div>
             </div>
             <div className="testWrap">
-                <StreamView />
+                <StreamView url={url} key={url} />
             </div>
             <div className="footerWrap">
                 <button
                     className="btn-2 btn-lg btn-round"
                     onClick={() => {
-                        funcCreate(name, url);
+                        isCheckProcessDone();
                     }}
                 >
                     등록
