@@ -68,7 +68,6 @@ const Header = () => {
     };
     const getMessage = async () => {
         const response = await messageLive();
-        console.log(response);
         if (response != null) {
             const responseObj = parseMessage(response);
             if (responseObj != message && response != "") {

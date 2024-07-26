@@ -4,7 +4,6 @@ const ENDPOINT = "https://localhost:40000/log";
 
 const logRead = async (datetime = [], location = [], types = []) => {
     try {
-        console.log(datetime, location, types);
         if (datetime[0] == null || datetime[1] == null) {
             datetime = [];
         }
@@ -22,7 +21,6 @@ const logRead = async (datetime = [], location = [], types = []) => {
 
 const logReadLimit = async (datetime = [], location = [], types = []) => {
     try {
-        console.log(datetime, location, types);
         if (datetime[0] == null || datetime[1] == null) {
             datetime = [];
         }

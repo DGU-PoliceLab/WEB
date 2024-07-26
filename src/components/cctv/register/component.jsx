@@ -30,13 +30,10 @@ const CctvRegister = ({ toggle }) => {
         }
     };
     const checkUrl = async () => {
-        console.log(url);
         if (url != "") {
-            console.log("check pass");
             setUrlCheck(true);
             setUrl(url);
         } else {
-            console.log("check fail");
             setUrlCheck(false);
             setMessage("CCTV URL은 공백으로 설정할 수 없습니다.");
         }
