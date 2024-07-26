@@ -30,7 +30,23 @@ const locationCctvRead = async () => {
         const response = await axios.post(ENDPOINT + "/read/cctv");
         return response.data;
     } catch (err) {
-        console.error("Error occured in services.locationService.read", err);
+        console.error(
+            "Error occured in services.locationService.cctvRead",
+            err
+        );
+        return { err: err };
+    }
+};
+
+const locationNameCheck = async (name) => {
+    try {
+        const response = await axios.post(ENDPOINT + "/check", { name: name });
+        return response.data;
+    } catch (err) {
+        console.error(
+            "Error occured in services.locationService.nameCheck",
+            err
+        );
         return { err: err };
     }
 };
@@ -65,6 +81,7 @@ export {
     locationCreate,
     locationRead,
     locationCctvRead,
+    locationNameCheck,
     locationUpdate,
     locationDelete,
 };

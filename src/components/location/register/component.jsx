@@ -1,18 +1,41 @@
 // 라이브러리
 import { useEffect, useState } from "react";
 // 서비스
-import { locationCreate } from "@/services/locationService";
+import { locationCreate, locationNameCheck } from "@/services/locationService";
 import { cctvRead } from "@/services/cctvService";
 // 컴포넌트
 // 아이콘
-import { DoorClosed } from "lucide-react";
+import { DoorClosed, AlertTriangle } from "lucide-react";
 // 스타일
 import "./style.css";
 
 const LocationRegister = ({ toggle }) => {
     const [name, setName] = useState("");
+    const [nameCheck, setNameCheck] = useState(false);
     const [cctv, setCctv] = useState(-1);
     const [cctvData, setCctvData] = useState([]);
+    const [message, setMessage] = useState("");
+    const checkName = async () => {
+        if (name != "") {
+            const response = await locationNameCheck(name);
+            setNameCheck(response);
+            if (response) {
+                setMessage("");
+            } else {
+                setMessage("이미 사용중인 유치실 명입니다.");
+            }
+        } else {
+            setNameCheck(false);
+            setMessage("유치실 명은 공백으로 설정할 수 없습니다.");
+        }
+    };
+    const isCheckProcessDone = () => {
+        if (!nameCheck) {
+            setMessage("유치실 명 중복 확인이 필요합니다.");
+        } else {
+            funcCreate(name, cctv);
+        }
+    };
     const update = (key, value) => {
         if (key == "name") {
             setName(value);
@@ -48,6 +71,12 @@ const LocationRegister = ({ toggle }) => {
                 <DoorClosed />
                 <p className="title">유치실 등록</p>
             </div>
+            {message != "" && (
+                <div className="msg msgDanger">
+                    <AlertTriangle />
+                    <p>{message}</p>
+                </div>
+            )}
             <div className="inputDataWrap">
                 <div className="nameWrap inputGroupWrap">
                     <p className="title">유치실 명</p>
@@ -60,7 +89,12 @@ const LocationRegister = ({ toggle }) => {
                             }}
                             defaultValue={name}
                         />
-                        <button className="btn-1 btn-sm btn-round">
+                        <button
+                            className="btn-1 btn-sm btn-round"
+                            onClick={() => {
+                                checkName();
+                            }}
+                        >
                             중복 확인
                         </button>
                     </div>
@@ -89,7 +123,7 @@ const LocationRegister = ({ toggle }) => {
                 <button
                     className="btn-2 btn-lg btn-round"
                     onClick={() => {
-                        funcCreate(name, cctv);
+                        isCheckProcessDone();
                     }}
                 >
                     등록
