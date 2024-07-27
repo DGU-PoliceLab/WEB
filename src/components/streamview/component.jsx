@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 // 서비스
 // 컴포넌트
 // 아이콘
+import { Loader } from "lucide-react";
 // 스타일
 import "./style.css";
 
@@ -24,7 +25,7 @@ const StreamView = ({ url }) => {
                 <p>No Signal</p>
             ) : (
                 <>
-                    <span className="spinner"></span>
+                    <Loader className="spinner" />
                     <img src={rtspUrl} alt="" srcset="" />
                 </>
             )}

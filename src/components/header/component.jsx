@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 // 서비스
 import { checkServer } from "@/services/serverService";
 import { locationCctvRead } from "@/services/locationService";
-import { messageLive } from "@/services/messageService";
 import { logCheck } from "@/services/logService";
 // 훅
 import useNotification from "@/hooks/useNotification";
@@ -28,6 +27,7 @@ const Header = () => {
     const [isMenu, setIsMenu] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [message, setMessage] = useState("");
+    const [lastAlarm, setLastAlarm] = useState("");
     // 서버 상태 확인
     const check = async () => {
         const response = await checkServer();
@@ -73,19 +73,6 @@ const Header = () => {
         const obj = JSON.parse(jsonString);
         return obj[0];
     };
-    // 실시간 메시지 받아오기
-    const getMessage = async () => {
-        const response = await messageLive();
-        if (response != null) {
-            if (response != "") {
-                const responseObj = parseMessage(response);
-                setIsNew(true);
-                setMessage(responseObj);
-            }
-        } else {
-            setIsNew(false);
-        }
-    };
     // 알람 확인
     const checkAlarm = () => {
         setIsNew(false);
@@ -94,24 +81,12 @@ const Header = () => {
     };
     // 매초마다 실행되는 함수
     useEffect(() => {
-        check();
         const timer = setInterval(() => {
+            check();
             updateTime();
-            getMessage();
         }, 1000);
         return () => clearInterval(timer);
     }, []);
-    useEffect(() => {
-        if (message != "") {
-            console.log("message >>>", message);
-            const notificationBody = `${message.location}에서 ${message.event}발생`;
-            showNotification("Policelab 2.0", {
-                body: notificationBody,
-                icon: "/logoBlack.png",
-                badge: "/logoBlack.png",
-            });
-        }
-    }, [message]);
     // 상단 페이지 타이틀 설정
     useEffect(() => {
         const path = location.pathname;
@@ -125,6 +100,35 @@ const Header = () => {
             setTitle(["CCTV 관리"]);
         }
     }, [location]);
+    useEffect(() => {
+        const ws = new WebSocket("wss://localhost:40000/ws");
+        ws.onmessage = (event) => {
+            const newMessage = parseMessage(event.data);
+            setMessage(newMessage);
+        };
+        ws.onclose = () => {
+            console.log("WebSocket connection closed");
+            navigate("/error/server");
+        };
+        return () => {
+            ws.close();
+        };
+    }, []);
+    useEffect(() => {
+        if (message != "") {
+            setIsNew(true);
+            const checkStr = `${message.event}, ${message.location}, ${message.occurred_at}`;
+            if (lastAlarm != checkStr) {
+                setLastAlarm(checkStr);
+                const notificationBody = `${message.location}에서 ${message.event}발생`;
+                showNotification("Policelab 2.0", {
+                    body: notificationBody,
+                    icon: "/logoBlack.png",
+                    badge: "/logoBlack.png",
+                });
+            }
+        }
+    }, [message]);
     return (
         <div id="header">
             <div

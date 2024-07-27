@@ -129,11 +129,7 @@ const PageController = ({ curPage, lastPage, changePage }) => {
     useEffect(() => {
         const indArray = indicatorArray(curPage, lastPage);
         setIndicator(indArray);
-    }, [curPage]);
-    // useEffect(() => {
-    //     num_to_array(lastPage);
-
-    // }, [lastPage]);
+    }, [curPage, lastPage]);
     return (
         <div className="pageController">
             <button

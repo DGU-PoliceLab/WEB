@@ -344,3 +344,12 @@ tr.noData {
 tr.noData > td {
     width: 100%;
 }
+
+@keyframes Spin {
+    0% {
+        rotate: 0deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}

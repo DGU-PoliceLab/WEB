@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { checkServer } from "@/services/serverService";
 // 컴포넌트
 // 아이콘
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert, Loader } from "lucide-react";
 // 스타일
 import "./style.css";
 
@@ -46,7 +46,8 @@ const ErrorPage = () => {
                     navigate("/");
                 }}
             >
-                {count}초 이후 다시 시도합니다.
+                <Loader />
+                <strong>{count}</strong>초 이후 다시 시도합니다.
             </button>
         </div>
     );
