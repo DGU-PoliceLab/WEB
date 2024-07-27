@@ -40,11 +40,6 @@ const EventList = ({ data }) => {
         <div id="eventList">
             <div className="headerWrap">
                 <p className="title">유치실 이벤트 내역</p>
-                <div className="funcWrap">
-                    <button className="btn-2 btn-sm btn-round">
-                        전체 보기
-                    </button>
-                </div>
             </div>
             <div className="tableWrap">
                 <EventTable data={pageData} key={pageData} />
