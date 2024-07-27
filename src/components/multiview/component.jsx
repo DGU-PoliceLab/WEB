@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 // 서비스
 import { locationCctvRead } from "@/services/locationService";
+import { parseMessage } from "@/utils/message";
 // 컴포넌트
 import StreamView from "../streamview/component";
 // 유틸
@@ -14,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const MultiView = () => {
     const [viewData, setViewData] = useState([]);
+    const [eventLocation, setEventLocation] = useState({});
     const getLocationCctvData = async () => {
         const response = await locationCctvRead();
         if (response != null) {
@@ -22,8 +24,35 @@ const MultiView = () => {
             setViewData([]);
         }
     };
+    const addLocation = (location) => {
+        let temp = {};
+        temp[location] = true;
+        setEventLocation((pre) => {
+            return { ...pre, ...temp };
+        });
+    };
+    const delLocation = (location) => {
+        let temp = {};
+        temp[location] = false;
+        setEventLocation((pre) => {
+            return { ...pre, ...temp };
+        });
+    };
     useEffect(() => {
         getLocationCctvData();
+    }, []);
+    useEffect(() => {
+        const ws = new WebSocket("wss://localhost:40000/message");
+        ws.onmessage = (event) => {
+            const newMessage = parseMessage(event.data);
+            addLocation(newMessage.location);
+        };
+        ws.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+        return () => {
+            ws.close();
+        };
     }, []);
     return (
         <div id="multiview">
@@ -32,15 +61,24 @@ const MultiView = () => {
                     id={item[0]}
                     name={item[1]}
                     url={item[4]}
-                    event={false}
+                    event={eventLocation[item[1]]}
                     key={idx}
+                    click={() => {
+                        delLocation(item[1]);
+                    }}
                 />
             ))}
         </div>
     );
 };
 
-const View = ({ id = 0, name = "유치실", url = "rtsp://", event = false }) => {
+const View = ({
+    id = 0,
+    name = "유치실",
+    url = "rtsp://",
+    event = false,
+    click,
+}) => {
     const navigate = useNavigate();
     const [time, setTime] = useState("");
     const updateTime = () => {
@@ -55,11 +93,15 @@ const View = ({ id = 0, name = "유치실", url = "rtsp://", event = false }) =>
 
         return () => clearInterval(timer);
     }, []);
+    // console.log(name, event);
     return (
-        <div className={event ? "view active" : "view"} key="id">
+        <div
+            className={event ? "view active" : "view"}
+            key="id"
+            onClick={click}
+        >
             <div className="headerWrap">
                 <p className="title">[ {name} ]</p>
-                {event && <p className="event">[ 낙상 {time} ]</p>}
                 <div
                     className="detailWrap"
                     onClick={() => {

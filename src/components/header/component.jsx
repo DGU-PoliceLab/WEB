@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { checkServer } from "@/services/serverService";
 import { locationCctvRead } from "@/services/locationService";
 import { logCheck } from "@/services/logService";
+import { parseMessage } from "@/utils/message";
 // 훅
 import useNotification from "@/hooks/useNotification";
 // 컴포넌트
@@ -67,12 +68,7 @@ const Header = () => {
         }
     };
     // 메시지 문자열을 딕셔너리로 변환
-    const parseMessage = (str) => {
-        str = "[" + str + "]";
-        const jsonString = str.replace(/'/g, '"');
-        const obj = JSON.parse(jsonString);
-        return obj[0];
-    };
+
     // 알람 확인
     const checkAlarm = () => {
         setIsNew(false);
@@ -101,7 +97,7 @@ const Header = () => {
         }
     }, [location]);
     useEffect(() => {
-        const ws = new WebSocket("wss://localhost:40000/ws");
+        const ws = new WebSocket("wss://localhost:40000/message");
         ws.onmessage = (event) => {
             const newMessage = parseMessage(event.data);
             setMessage(newMessage);
