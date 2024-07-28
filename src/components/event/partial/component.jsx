@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 // 서비스
 import { logRead } from "@/services/logService";
 // 컴포넌트
+import EventViewer from "../viewer/component";
 // 아이콘
 // 스타일
 import "./style.css";
@@ -77,18 +78,31 @@ const EventTable = ({ data }) => {
 };
 
 const EventItem = ({ data }) => {
-    const [event, setEvent] = useState(data);
+    const [isVisible, setIsVisible] = useState(false);
+    const [clip, setClip] = useState("");
+    useEffect(() => {
+        let filename = `${data.location}_${data.type}_${data.occured}.mp4`;
+        filename = filename.replace("T", "%20");
+        const url = "https://localhost:40000/file/clip/" + filename;
+        setClip(url);
+    }, []);
     return (
-        <tr className="eventItem" key={event.id}>
-            <td className="time">{event.occured}</td>
-            <td className="type">{event.type}</td>
+        <tr className="eventItem" key={data.id}>
+            <td className="time">{data.occured}</td>
+            <td className="type">{data.type}</td>
             <td className="dummy"></td>
-            <td className="check">{event.checked}</td>
+            <td className="check">{data.checked}</td>
             <td className="detail">
-                <button className="btn-1 btn-m btn-round">
+                <button
+                    className="btn-1 btn-m btn-round"
+                    onClick={() => {
+                        setIsVisible(true);
+                    }}
+                >
                     이벤트 상세 보기
                 </button>
             </td>
+            {isVisible && <EventViewer toggle={setIsVisible} url={clip} />}
         </tr>
     );
 };

@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 // 서비스
 // 컴포넌트
+import EventViewer from "../viewer/component";
 // 유틸
-import { num_to_array, indicatorArray } from "@/utils/array";
+import { indicatorArray } from "@/utils/array";
 // 아이콘
 import {
     ChevronLeft,
@@ -75,6 +76,8 @@ const EventTable = ({ data }) => {
 
 const EventItem = ({ data }) => {
     const [logInfo, setLogInfo] = useState({});
+    const [isVisible, setIsVisible] = useState(false);
+    const [clip, setClip] = useState("");
     const parseData = (info) => {
         let parsed = {};
         parsed["id"] = info[0];
@@ -82,6 +85,10 @@ const EventItem = ({ data }) => {
         parsed["location"] = info[2];
         parsed["occured"] = info[3];
         parsed["checked"] = info[4];
+        let filename = `${parsed.location}_${parsed.type}_${parsed.occured}.mp4`;
+        filename = filename.replace("T", "%20");
+        const url = "https://localhost:40000/file/clip/" + filename;
+        setClip(url);
         setLogInfo(parsed);
     };
     useEffect(() => {
@@ -95,10 +102,16 @@ const EventItem = ({ data }) => {
             <td className="dummy"></td>
             <td className="check">{logInfo.checked}</td>
             <td className="detail">
-                <button className="btn-1 btn-m btn-round">
+                <button
+                    className="btn-1 btn-m btn-round"
+                    onClick={() => {
+                        setIsVisible(true);
+                    }}
+                >
                     이벤트 상세 보기
                 </button>
             </td>
+            {isVisible && <EventViewer toggle={setIsVisible} url={clip} />}
         </tr>
     );
 };
