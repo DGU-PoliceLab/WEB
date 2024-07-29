@@ -87,11 +87,11 @@ const View = ({ data }) => {
                     <span className="value">{data.breath}</span>
                     <span>회/분</span>
                 </div>
-                <div className="tempWrap dataWrap">
+                {/* <div className="tempWrap dataWrap">
                     <Temp />
                     <span className="value">{data.temp}</span>
                     <span>도</span>
-                </div>
+                </div> */}
             </div>
         </div>
     );

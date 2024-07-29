@@ -12,10 +12,10 @@ import useNotification from "@/hooks/useNotification";
 import MenuList from "@/components/menulist/component";
 // 유틸
 import { get_datetime } from "@/utils/time";
-// import { tts } from "@/utils/voice";
+import { tts } from "@/utils/voice";
 // 아이콘
 import Logo from "@/assets/logo.png";
-import { Menu, ChevronRight, Siren } from "lucide-react";
+import { Menu, ChevronRight, Siren, Volume2, VolumeX, BellRing, BellOff } from "lucide-react";
 // 스타일
 import "./style.css";
 
@@ -25,6 +25,8 @@ const Header = () => {
     const { showNotification } = useNotification();
     const [title, setTitle] = useState([]);
     const [time, setTime] = useState("");
+    const [useTts, setUseTts] = useState(false);
+    const [useBrowserAlarm, setUseBrowserAlarm] = useState(false);
     const [isMenu, setIsMenu] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [message, setMessage] = useState("");
@@ -116,12 +118,18 @@ const Header = () => {
             const checkStr = `${message.event}, ${message.location}, ${message.occurred_at}`;
             if (lastAlarm != checkStr) {
                 setLastAlarm(checkStr);
-                const notificationBody = `${message.location}에서 ${message.event}발생`;
-                showNotification("Policelab 2.0", {
-                    body: notificationBody,
-                    icon: "/logoBlack.png",
-                    badge: "/logoBlack.png",
-                });
+                const notificationText = `${message.location}에서 ${message.event}발생!`;
+                if (useBrowserAlarm) {
+                    showNotification("Policelab 2.0", {
+                        body: notificationText,
+                        icon: "/logoBlack.png",
+                        badge: "/logoBlack.png",
+                    });
+                }
+                if (useTts) {
+                    let ttsStr = notificationText.repeat(3)
+                    tts(ttsStr)
+                }
             }
         }
     }, [message]);
@@ -159,6 +167,24 @@ const Header = () => {
                     </p>
                 </div>
             )}
+            <div className="browserAlarmWrap" onClick={()=>{
+                if (useBrowserAlarm) {
+                    window.alert("브라우저 알람을 끕니다.")
+                } else {
+                    window.alert("브라우저 알람을 켭니다.")
+                }
+                setUseBrowserAlarm(!useBrowserAlarm)}}>
+                {useBrowserAlarm ? <BellRing className="active"></BellRing> : <BellOff></BellOff>}
+            </div>
+            <div className="ttsWrap" onClick={()=>{
+                if (useTts) {
+                    window.alert("음성 알람을 끕니다.")
+                } else {
+                    window.alert("음성 알람을 켭니다.")
+                }
+                setUseTts(!useTts)}}>
+                {useTts ? <Volume2 className="active"></Volume2> : <VolumeX></VolumeX>}
+            </div>
             <div
                 className="menuWrap"
                 onClick={() => {
