@@ -34,6 +34,7 @@
         "node-rtsp-stream": "^0.0.9",
         "react": "^18.2.0",
         "react-aria": "^3.32.1",
+        "react-cookies": "^0.1.1",
         "react-datepicker": "^7.3.0",
         "react-datetime-picker": "^6.0.1",
         "react-day-picker": "^8.10.0",

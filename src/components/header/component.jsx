@@ -1,6 +1,7 @@
 // 라이브러리
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import cookie from 'react-cookies';
 // 서비스
 import { checkServer } from "@/services/serverService";
 import { locationCctvRead } from "@/services/locationService";
@@ -69,16 +70,37 @@ const Header = () => {
             navigate("/");
         }
     };
-    // 메시지 문자열을 딕셔너리로 변환
-
     // 알람 확인
     const checkAlarm = () => {
         setIsNew(false);
         setMessage("");
         logCheck();
     };
+    // 알람 옵션 불러오기
+    const loadAlarmOptions = () => {
+        const bAlarm = cookie.load("useBrowserAlarm")
+        const tAlarm = cookie.load("useTtsAlarm")
+        const expires = new Date()
+        expires.setFullYear(expires.getFullYear() + 10);
+        if (bAlarm == undefined) {
+            cookie.save('useBrowserAlarm', false, {
+                path : '/',
+                expires
+            })
+        }
+        if (tAlarm == undefined) {
+            cookie.save('useTtsAlarm', false, {
+                path : '/',
+                expires
+            })
+        }
+        setUseBrowserAlarm(bAlarm == "true")
+        setUseTts(tAlarm == "true")
+    }
     // 매초마다 실행되는 함수
     useEffect(() => {
+        loadAlarmOptions()
+        updateTime()
         const timer = setInterval(() => {
             check();
             updateTime();
@@ -96,6 +118,8 @@ const Header = () => {
             setTitle(["이벤트 리스트"]);
         } else if (path == "/cctv") {
             setTitle(["CCTV 관리"]);
+        } else if (path == "/location") {
+            setTitle(["유치실 관리"]);
         }
     }, [location]);
     useEffect(() => {
@@ -112,6 +136,22 @@ const Header = () => {
             ws.close();
         };
     }, []);
+    useEffect(()=>{
+        const expires = new Date()
+        expires.setFullYear(expires.getFullYear() + 10);
+        cookie.save('useBrowserAlarm', useBrowserAlarm, {
+            path : '/',
+            expires
+        })
+    },[useBrowserAlarm])
+    useEffect(()=>{
+        const expires = new Date()
+        expires.setFullYear(expires.getFullYear() + 10);
+        cookie.save('useTtsAlarm', useTts, {
+            path : '/',
+            expires
+        })
+    },[useTts])
     useEffect(() => {
         if (message != "") {
             setIsNew(true);

@@ -15,6 +15,7 @@ const OverView = ({ target }) => {
         const response = await snapRead(target);
         if (response) {
             setObjectData(response);
+            console.log(response);
         } else {
             setObjectData([]);
         }
@@ -55,7 +56,7 @@ const View = ({ data }) => {
             <div className="thumbWrap">
                 <img
                     className="thumbnail"
-                    src={"https://localhost:40000/file/snap/" + data.thumb}
+                    src={data.thumb}
                     alt={data.thumb}
                     key={data.thumb}
                 />
