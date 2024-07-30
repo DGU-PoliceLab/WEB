@@ -81,8 +81,9 @@ const EventItem = ({ data }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [clip, setClip] = useState("");
     useEffect(() => {
-        let filename = `${data.location}_${data.type}_${data.occured}.mp4`;
-        filename = filename.replace("T", "%20");
+        let filename = `${data.location}_${data.type}_${data.occured}_h264.mp4`;
+        filename = filename.replace(/[-T: ]/g, "_");
+        console.log(">>>", filename);
         const url = "https://localhost:40000/file/clip/" + filename;
         setClip(url);
     }, []);

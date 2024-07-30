@@ -85,9 +85,10 @@ const EventItem = ({ data }) => {
         parsed["location"] = info[2];
         parsed["occured"] = info[3];
         parsed["checked"] = info[4];
-        let filename = `${parsed.location}_${parsed.type}_${parsed.occured}.mp4`;
-        filename = filename.replace("T", "%20");
-        const url = "https://localhost:40000/file/clip/" + filename;
+        let filename = `${parsed.location}_${parsed.type}_${parsed.occured}_h264.mp4`;
+        filename = filename.replace(/[-T: ]/g, "_");
+        console.log(">>>", filename);
+        const url = "https://localhost:40000/file/clip/" + filename ;
         setClip(url);
         setLogInfo(parsed);
     };
