@@ -29,7 +29,10 @@ const PartialEventList = ({ target, state, toggle }) => {
         }
     };
     useEffect(() => {
-        getLogData(target);
+        const timer = setInterval(() => {
+            getLogData(target);
+          }, 1000);
+          return () => clearInterval(timer);
     }, []);
     return (
         <div id="partialEventList">
