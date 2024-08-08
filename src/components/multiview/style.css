@@ -1,24 +1,38 @@
 #multiview {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-@media screen and (max-width: 1920px) {
-    #multiview {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-@media screen and (max-width: 1680px) {
-    #multiview {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media screen and (max-width: 960px) {
-    #multiview {
-        grid-template-columns: repeat(1, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
 }
 
-#multiview > .view {
+#multiview > .controllerWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: .25rem 0;
+}
+
+#multiview > .controllerWrap > select {
+    width: 160px;
+    max-width: 160px;
+}
+
+#multiview > .multiviewWrap {
+    display: grid;
+}
+
+#multiview > .multiviewWrap.size1 {
+    grid-template-columns: repeat(1, 1fr);
+}
+#multiview > .multiviewWrap.size2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+#multiview > .multiviewWrap.size3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+#multiview > .multiviewWrap.size4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+#multiview > .multiviewWrap > .view {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -28,11 +42,11 @@
     border-radius: var(--view-radius);
 }
 
-#multiview > .view.active {
+#multiview > .multiviewWrap > .view.active {
     background-color: var(--danger);
 }
 
-#multiview > .view > .headerWrap {
+#multiview > .multiviewWrap > .view > .headerWrap {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -40,14 +54,14 @@
     height: 1.5rem;
 }
 
-#multiview > .view > .headerWrap > .title {
+#multiview > .multiviewWrap > .view > .headerWrap > .title {
     flex: 1;
     font-size: 1rem;
     font-weight: 600;
     color: var(--col-gray-scale-8);
 }
 
-#multiview > .view > .headerWrap > .detailWrap {
+#multiview > .multiviewWrap > .view > .headerWrap > .detailWrap {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -57,24 +71,24 @@
     background-color: transparent;
     transition: 0.25s;
 }
-#multiview > .view > .headerWrap > .detailWrap > svg {
+#multiview > .multiviewWrap > .view > .headerWrap > .detailWrap > svg {
     color: var(--col-gray-scale-9);
     transition: 0.25s;
 }
 
-#multiview > .view > .headerWrap > .detailWrap:hover {
+#multiview > .multiviewWrap > .view > .headerWrap > .detailWrap:hover {
     background-color: var(--col-gray-scale-9);
 }
 
-#multiview > .view > .headerWrap > .detailWrap:hover > svg {
+#multiview > .multiviewWrap > .view > .headerWrap > .detailWrap:hover > svg {
     color: var(--col-gray-scale-0);
 }
 
-#multiview > .view.active > .headerWrap > .detailWrap:hover > svg {
+#multiview > .multiviewWrap > .view.active > .headerWrap > .detailWrap:hover > svg {
     color: var(--danger);
 }
 
-#multiview > .view > .contentWrap {
+#multiview > .multiviewWrap > .view > .contentWrap {
     width: 100%;
     aspect-ratio: 16 / 9;
 }

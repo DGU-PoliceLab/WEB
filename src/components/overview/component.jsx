@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { snapRead } from "@/services/snapService";
 // 컴포넌트
 // 아이콘
-import { SquareDashedMousePointer } from "lucide-react";
+import { SquareDashedMousePointer, Ban } from "lucide-react";
 import { Breath, Emotion, Heart, Temp } from "@/assets/icons/icons";
 // 스타일
 import "./style.css";
@@ -36,7 +36,10 @@ const OverView = ({ target }) => {
                 {objectData.length != 0 ? (
                     <>
                         {objectData.map((item, idx) => (
-                            <View data={item} key={item} />
+                            <>
+                            {item.tid !== -1 ? <View data={item} key={item} /> : <ToiletView data={item} key={item} />}
+                            </>
+                            
                         ))}
                     </>
                 ) : (
@@ -63,7 +66,7 @@ const View = ({ data }) => {
             </div>
             <div className="contentWrap">
                 <div className="nameWrap dataWrap">
-                    <span className="value">{data.id}</span>
+                    <span className="value">유치인 {data.tid}</span>
                 </div>
                 <div className="emotionWrap dataWrap">
                     <Emotion />
@@ -93,6 +96,34 @@ const View = ({ data }) => {
                     <span className="value">{data.temp}</span>
                     <span>도</span>
                 </div> */}
+            </div>
+        </div>
+    );
+};
+
+const ToiletView = ({ data }) => {
+    return (
+        <div className="view">
+            <div className="thumbWrap">
+                <div className="thumbToilet">
+                    <Ban/>
+                    <p>이미지 미지원</p>
+                </div>
+            </div>
+            <div className="contentWrap">
+                <div className="nameWrap dataWrap">
+                    <span className="value">화장실</span>
+                </div>
+                <div className="heartWrap dataWrap">
+                    <Heart />
+                    <span className="value">{data.heart}</span>
+                    <span>BPM</span>
+                </div>
+                <div className="breathWrap dataWrap">
+                    <Breath />
+                    <span className="value">{data.breath}</span>
+                    <span>회/분</span>
+                </div>
             </div>
         </div>
     );

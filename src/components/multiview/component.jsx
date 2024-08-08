@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 const MultiView = () => {
     const [viewData, setViewData] = useState([]);
     const [eventLocation, setEventLocation] = useState({});
+    const [viewSize, setViewSize] = useState(3)
     const getLocationCctvData = async () => {
         const response = await locationCctvRead();
         if (response != null) {
@@ -56,6 +57,17 @@ const MultiView = () => {
     }, []);
     return (
         <div id="multiview">
+            <div className="controllerWrap">
+                <select defaultValue={"3"} onChange={(e)=>{
+                    setViewSize(e.target.value)
+                }}>
+                    <option value="4">작은 화면</option>
+                    <option value="3">보통 화면</option>
+                    <option value="2">큰 화면</option>
+                    <option value="1">매우 큰 화면</option>
+                </select>
+            </div>
+            <div className={`multiviewWrap size${viewSize}`}>
             {viewData.map((item, idx) => (
                 <View
                     id={item[0]}
@@ -68,6 +80,7 @@ const MultiView = () => {
                     }}
                 />
             ))}
+            </div>
         </div>
     );
 };
